@@ -13,10 +13,11 @@ type (
 	}
 
 	QPayCreateInvoiceInput struct {
-		SenderCode   string
-		ReceiverCode string
-		Description  string
-		Amount       float64
+		SenderCode    string
+		ReceiverCode  string
+		Description   string
+		Amount        float64
+		CallbackParam map[string]string
 	}
 
 	QPaySimpleInvoiceRequest struct {

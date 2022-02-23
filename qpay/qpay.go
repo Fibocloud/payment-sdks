@@ -2,6 +2,8 @@ package qpay
 
 import (
 	"encoding/json"
+	"fmt"
+	"net/url"
 )
 
 type qpay struct {
@@ -38,13 +40,18 @@ func New(username, password, endpoint, callback, invoiceCode, merchantId string)
 }
 
 func (q *qpay) CreateInvoice(input QPayCreateInvoiceInput) (QPaySimpleInvoiceResponse, error) {
+	vals := url.Values{}
+	for k, v := range input.CallbackParam {
+		vals.Add(k, v)
+	}
+
 	request := QPaySimpleInvoiceRequest{
 		InvoiceCode:         q.invoiceCode,
 		SenderInvoiceCode:   input.SenderCode,
 		InvoiceReceiverCode: input.ReceiverCode,
 		InvoiceDescription:  input.Description,
 		Amount:              input.Amount,
-		CallbackUrl:         q.callback,
+		CallbackUrl:         fmt.Sprintf("%s?%s", q.callback, vals.Encode()),
 	}
 
 	res, err := q.httpRequestQPay(request, QPayInvoiceCreate, "")
