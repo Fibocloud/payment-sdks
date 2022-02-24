@@ -108,7 +108,7 @@ func (q *qpay) CheckPayment(invoiceId string, pageLimit, pageNumber int32) (Qpay
 
 	var response QpayPaymentCheckResponse
 
-	res, err := q.httpRequestQPay(nil, QPayPaymentCheck, invoiceId)
+	res, err := q.httpRequestQPay(req, QPayPaymentCheck, "")
 	if err != nil {
 		return response, err
 	}
