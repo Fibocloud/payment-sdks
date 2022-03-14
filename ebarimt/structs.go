@@ -13,6 +13,14 @@ type CreateEbarimtRequest struct {
 	Stocks        []Stock `json:"stocks"`
 }
 
+type CreateEbarimtInput struct {
+	CustomerNo   string
+	BranchNo     string
+	BillType     string
+	DistrictCode string
+	Stocks       []StockInput
+}
+
 type Stock struct {
 	Code        string `json:"code"`
 	Name        string `json:"name"`
@@ -23,6 +31,17 @@ type Stock struct {
 	CityTax     string `json:"cityTax"`
 	Vat         string `json:"vat"`
 	BarCode     string `json:"barCode"`
+}
+
+type StockInput struct {
+	Code        string
+	Name        string
+	MeasureUnit string
+	Qty         float64
+	UnitPrice   float64
+	CityTax     float64
+	Vat         float64
+	BarCode     string
 }
 
 type CreateEbarimtResponse struct {
