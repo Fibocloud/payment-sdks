@@ -65,6 +65,7 @@ type CreateEbarimtResponse struct {
 	QrData        string  `json:"qrData"`
 	MerchantId    string  `json:"merchantId"`
 	Success       bool    `json:"success"`
+	Message       string  `json:"message"`
 }
 
 type ReturnBillResponse struct {
