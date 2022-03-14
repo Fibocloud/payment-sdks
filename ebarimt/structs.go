@@ -16,7 +16,7 @@ type CreateEbarimtRequest struct {
 type CreateEbarimtInput struct {
 	CustomerNo   string
 	BranchNo     string
-	BillType     string
+	BillType     ebarimtbilltype
 	DistrictCode string
 	Stocks       []StockInput
 }

@@ -1,8 +1,8 @@
 package ebarimt
 
-type EBarimtBillType string
+type ebarimtbilltype string
 
 const (
-	EBarimtPersonType       = EBarimtBillType("1")
-	EBarimtOrganizationType = EBarimtBillType("3")
+	EBarimtPersonType       = ebarimtbilltype("1")
+	EBarimtOrganizationType = ebarimtbilltype("3")
 )

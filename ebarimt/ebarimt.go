@@ -31,7 +31,6 @@ func float64ToString(f float64) string {
 }
 
 func stockInputToStock(input []StockInput) (stocks []Stock, amount float64, vat float64, citytax float64) {
-	//init return values
 	amount = 0
 	vat = 0
 	citytax = 0
@@ -56,6 +55,12 @@ func stockInputToStock(input []StockInput) (stocks []Stock, amount float64, vat 
 }
 
 func createInputToRequestBody(input CreateEbarimtInput) *CreateEbarimtRequest {
+	if input.DistrictCode == "" {
+		input.DistrictCode = "34"
+	}
+	if input.BranchNo == "" {
+		input.BranchNo = "001"
+	}
 	stocks, amount, vat, citytax := stockInputToStock(input.Stocks)
 	return &CreateEbarimtRequest{
 		Amount:        float64ToString(amount),
@@ -64,7 +69,7 @@ func createInputToRequestBody(input CreateEbarimtInput) *CreateEbarimtRequest {
 		NonCashAmount: float64ToString(amount),
 		CityTax:       float64ToString(citytax),
 		CustomerNo:    input.CustomerNo,
-		BillType:      input.BillType,
+		BillType:      string(input.BillType),
 		BranchNo:      input.BranchNo,
 		DistrictCode:  input.DistrictCode,
 		Stocks:        stocks,
@@ -73,6 +78,10 @@ func createInputToRequestBody(input CreateEbarimtInput) *CreateEbarimtRequest {
 
 func (b ebarimt) GetNewEBarimt(bodyraw *CreateEbarimtInput) (*CreateEbarimtResponse, error) {
 	body := createInputToRequestBody(*bodyraw)
+	if bodyraw.BillType == EBarimtOrganizationType && body.CustomerNo == "" {
+		return nil, errors.New("CustomerNo is required")
+	}
+
 	var requestByte []byte
 	var requestBody *bytes.Reader
 	if body == nil {
