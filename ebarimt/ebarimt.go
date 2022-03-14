@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"errors"
+	"fmt"
 	"net/http"
 )
 
@@ -12,18 +13,92 @@ type ebarimt struct {
 	endpoint   string
 }
 
-func New(customerNo, endpoint string) Ebarimt {
-	return ebarimt{
-		customerNo: customerNo,
-		endpoint:   endpoint,
-	}
-}
-
 type Ebarimt interface {
-	GetNewEBarimt(*CreateEbarimtRequest) (*CreateEbarimtResponse, error)
+	GetNewEBarimt(*CreateEbarimtInput) (*CreateEbarimtResponse, error)
 	CheckApi() error
 	ReturnBill(billId, date string) (bool, error)
 	SendData() error
+}
+
+func New(endpoint string) Ebarimt {
+	return ebarimt{
+		endpoint: endpoint,
+	}
+}
+
+func float64ToString(f float64) string {
+	return fmt.Sprintf("%.2f", f)
+}
+
+func stockInputToStock(input []StockInput) (stocks []Stock, amount float64, vat float64, citytax float64) {
+	//init return values
+	amount = 0
+	vat = 0
+	citytax = 0
+
+	for _, v := range input {
+		amount += v.UnitPrice * v.Qty
+		vat += v.Vat
+		citytax += v.CityTax
+		stocks = append(stocks, Stock{
+			Code:        v.Code,
+			Name:        v.Name,
+			Qty:         float64ToString(v.Qty),
+			MeasureUnit: v.MeasureUnit,
+			UnitPrice:   float64ToString(v.UnitPrice),
+			CityTax:     float64ToString(v.CityTax),
+			Vat:         float64ToString(v.Vat),
+			BarCode:     v.BarCode,
+			TotalAmount: float64ToString(v.UnitPrice * v.Qty),
+		})
+	}
+	return
+}
+
+func createInputToRequestBody(input CreateEbarimtInput) *CreateEbarimtRequest {
+	stocks, amount, vat, citytax := stockInputToStock(input.Stocks)
+	return &CreateEbarimtRequest{
+		Amount:        float64ToString(amount),
+		Vat:           float64ToString(vat),
+		CashAmount:    float64ToString(0),
+		NonCashAmount: float64ToString(amount),
+		CityTax:       float64ToString(citytax),
+		CustomerNo:    input.CustomerNo,
+		BillType:      input.BillType,
+		BranchNo:      input.BranchNo,
+		DistrictCode:  input.DistrictCode,
+		Stocks:        stocks,
+	}
+}
+
+func (b ebarimt) GetNewEBarimt(bodyraw *CreateEbarimtInput) (*CreateEbarimtResponse, error) {
+	body := createInputToRequestBody(*bodyraw)
+	var requestByte []byte
+	var requestBody *bytes.Reader
+	if body == nil {
+		requestBody = bytes.NewReader(nil)
+	} else {
+		body.CustomerNo = b.customerNo
+		requestByte, _ = json.Marshal(body)
+		requestBody = bytes.NewReader(requestByte)
+	}
+	req, err := http.NewRequest("POST", b.endpoint+"/put", requestBody)
+	if err != nil {
+		return nil, err
+	}
+	req.Header.Add("Content-Type", "application/json")
+	res, err := http.DefaultClient.Do(req)
+	if err != nil {
+		return nil, err
+	}
+
+	var responseBody CreateEbarimtResponse
+	err = json.NewDecoder(res.Body).Decode(&responseBody)
+	if err != nil {
+		return nil, err
+	}
+
+	return &responseBody, nil
 }
 
 func (b ebarimt) SendData() error {
@@ -69,36 +144,4 @@ func (b ebarimt) ReturnBill(billId, date string) (bool, error) {
 func (b ebarimt) CheckApi() error {
 	_, err := http.Get(b.endpoint)
 	return err
-}
-
-func (b ebarimt) GetNewEBarimt(body *CreateEbarimtRequest) (*CreateEbarimtResponse, error) {
-	var requestByte []byte
-	var requestBody *bytes.Reader
-	if body == nil {
-		requestBody = bytes.NewReader(nil)
-	} else {
-		body.CustomerNo = b.customerNo
-		requestByte, _ = json.Marshal(body)
-		requestBody = bytes.NewReader(requestByte)
-	}
-	req, err := http.NewRequest("POST", b.endpoint+"/put", requestBody)
-	if err != nil {
-		err = errors.New("НӨАТ хүсэтийг боловсруулж чадсангүй")
-		return nil, err
-	}
-	req.Header.Add("Content-Type", "application/json")
-	res, err := http.DefaultClient.Do(req)
-	if err != nil {
-		err = errors.New("НӨАТ хүсэтийг боловсруулж чадсангүй")
-		return nil, err
-	}
-
-	var responseBody CreateEbarimtResponse
-	err = json.NewDecoder(res.Body).Decode(&responseBody)
-	if err != nil {
-		err = errors.New("НӨАТ хүсэтийг боловсруулж чадсангүй")
-		return nil, err
-	}
-
-	return &responseBody, nil
 }
