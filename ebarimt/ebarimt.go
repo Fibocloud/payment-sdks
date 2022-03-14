@@ -77,6 +77,7 @@ func (b ebarimt) GetNewEBarimt(body *CreateEbarimtRequest) (*CreateEbarimtRespon
 	if body == nil {
 		requestBody = bytes.NewReader(nil)
 	} else {
+		body.CustomerNo = b.customerNo
 		requestByte, _ = json.Marshal(body)
 		requestBody = bytes.NewReader(requestByte)
 	}
