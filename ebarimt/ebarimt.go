@@ -87,7 +87,7 @@ func (b ebarimt) GetNewEBarimt(bodyraw *CreateEbarimtInput) (*CreateEbarimtRespo
 	if body == nil {
 		requestBody = bytes.NewReader(nil)
 	} else {
-		body.CustomerNo = b.customerNo
+		body.CustomerNo = bodyraw.CustomerNo
 		requestByte, _ = json.Marshal(body)
 		requestBody = bytes.NewReader(requestByte)
 	}
