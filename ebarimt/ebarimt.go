@@ -83,20 +83,17 @@ func (b ebarimt) GetNewEBarimt(body *CreateEbarimtRequest) (*CreateEbarimtRespon
 	}
 	req, err := http.NewRequest("POST", b.endpoint+"/put", requestBody)
 	if err != nil {
-		err = errors.New("НӨАТ хүсэтийг боловсруулж чадсангүй")
 		return nil, err
 	}
 	req.Header.Add("Content-Type", "application/json")
 	res, err := http.DefaultClient.Do(req)
 	if err != nil {
-		err = errors.New("НӨАТ хүсэтийг боловсруулж чадсангүй")
 		return nil, err
 	}
 
 	var responseBody CreateEbarimtResponse
 	err = json.NewDecoder(res.Body).Decode(&responseBody)
 	if err != nil {
-		err = errors.New("НӨАТ хүсэтийг боловсруулж чадсангүй")
 		return nil, err
 	}
 
