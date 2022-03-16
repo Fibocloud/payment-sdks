@@ -142,7 +142,7 @@ func (b ebarimtcli) GetNewEBarimt(bodyraw *CreateEbarimtInput) (*CreateEbarimtRe
 }
 
 func (b ebarimtcli) SendData() error {
-	_, err := exec.Command("ebarimt", "sendData").Output()
+	_, err := exec.Command("ebarimt", "send_data").Output()
 	if err != nil {
 		return err
 	}
@@ -197,7 +197,7 @@ func (b ebarimtcli) ReturnBill(billId, date string) (bool, error) {
 	if err != nil {
 		return false, err
 	}
-	out, err := exec.Command("ebarimt", "returnBill", string(body)).Output()
+	out, err := exec.Command("ebarimt", "return_bill", string(body)).Output()
 	if err != nil {
 		return false, err
 	}
@@ -219,6 +219,6 @@ func (b ebarimt) CheckApi() error {
 }
 
 func (b ebarimtcli) CheckApi() error {
-	_, err := exec.Command("ebarimt", "checkApi").Output()
+	_, err := exec.Command("ebarimt", "check_api").Output()
 	return err
 }
