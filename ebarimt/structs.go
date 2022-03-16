@@ -68,6 +68,17 @@ type CreateEbarimtResponse struct {
 	Message       string  `json:"message"`
 }
 
+type CheckAPIItem struct {
+	Message *string `json:"message"`
+	Success bool    `json:"success"`
+}
+type CheckResponse struct {
+	Config   CheckAPIItem `json:"config"`
+	Database CheckAPIItem `json:"database"`
+	Network  CheckAPIItem `json:"network"`
+	Success  bool         `json:"success"`
+}
+
 type ReturnBillResponse struct {
 	Success bool `json:"success"`
 }

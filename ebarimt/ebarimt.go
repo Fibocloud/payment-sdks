@@ -18,7 +18,7 @@ type ebarimtcli struct {
 
 type Ebarimt interface {
 	GetNewEBarimt(*CreateEbarimtInput) (*CreateEbarimtResponse, error)
-	CheckApi() error
+	CheckApi() (*CheckResponse, error)
 	ReturnBill(billId, date string) (bool, error)
 	SendData() error
 }
@@ -127,7 +127,7 @@ func (b ebarimtcli) GetNewEBarimt(bodyraw *CreateEbarimtInput) (*CreateEbarimtRe
 	body.CustomerNo = bodyraw.CustomerNo
 	requestByte, _ = json.Marshal(body)
 
-	out, err := exec.Command("ebarimt", "put", string(requestByte)).Output()
+	out, err := exec.Command("ebarimt", "put", fmt.Sprintf("'%s'", fmt.Sprintf("'%s'", string(requestByte)))).Output()
 	if err != nil {
 		return nil, err
 	}
@@ -197,7 +197,7 @@ func (b ebarimtcli) ReturnBill(billId, date string) (bool, error) {
 	if err != nil {
 		return false, err
 	}
-	out, err := exec.Command("ebarimt", "return_bill", string(body)).Output()
+	out, err := exec.Command("ebarimt", "return_bill", fmt.Sprintf("'%s'", string(body))).Output()
 	if err != nil {
 		return false, err
 	}
@@ -213,12 +213,35 @@ func (b ebarimtcli) ReturnBill(billId, date string) (bool, error) {
 	return responseBody.Success, nil
 }
 
-func (b ebarimt) CheckApi() error {
-	_, err := http.Get(b.endpoint)
-	return err
+func (b ebarimt) CheckApi() (*CheckResponse, error) {
+	var responseBody CheckResponse
+	resp, err := http.Get(b.endpoint)
+	if err != nil {
+		return &responseBody, err
+	}
+	if resp.StatusCode != 200 {
+		return &responseBody, errors.New("return bill failed")
+	}
+
+	err = json.NewDecoder(resp.Body).Decode(&responseBody)
+	if err != nil {
+		return &responseBody, err
+	}
+	return &responseBody, err
+
 }
 
-func (b ebarimtcli) CheckApi() error {
-	_, err := exec.Command("ebarimt", "check_api").Output()
-	return err
+func (b ebarimtcli) CheckApi() (*CheckResponse, error) {
+	var responseBody CheckResponse
+	out, err := exec.Command("ebarimt", "check_api").Output()
+	if err != nil {
+		return nil, err
+	}
+	rdr := bytes.NewReader(out)
+
+	err = json.NewDecoder(rdr).Decode(&responseBody)
+	if err != nil {
+		return nil, err
+	}
+	return &responseBody, nil
 }
