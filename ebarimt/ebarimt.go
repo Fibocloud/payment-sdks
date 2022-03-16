@@ -14,7 +14,6 @@ type ebarimt struct {
 }
 
 type ebarimtcli struct {
-	endpoint string
 }
 
 type Ebarimt interface {
@@ -30,10 +29,8 @@ func New(endpoint string) Ebarimt {
 	}
 }
 
-func NewCli(endpoint string) Ebarimt {
-	return ebarimtcli{
-		endpoint: endpoint,
-	}
+func NewCli() Ebarimt {
+	return ebarimtcli{}
 }
 
 func float64ToString(f float64) string {
