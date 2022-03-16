@@ -131,7 +131,7 @@ func (b ebarimtcli) GetNewEBarimt(bodyraw *CreateEbarimtInput) (*CreateEbarimtRe
 	if err != nil {
 		return nil, err
 	}
-
+	fmt.Println("out :", string(out))
 	var responseBody CreateEbarimtResponse
 	err = json.NewDecoder(bytes.NewReader(out)).Decode(&responseBody)
 	if err != nil {
@@ -142,10 +142,11 @@ func (b ebarimtcli) GetNewEBarimt(bodyraw *CreateEbarimtInput) (*CreateEbarimtRe
 }
 
 func (b ebarimtcli) SendData() error {
-	_, err := exec.Command("ebarimt", "send_data").Output()
+	out, err := exec.Command("ebarimt", "send_data").Output()
 	if err != nil {
 		return err
 	}
+	fmt.Println("out :", string(out))
 	return nil
 }
 
@@ -201,6 +202,7 @@ func (b ebarimtcli) ReturnBill(billId, date string) (bool, error) {
 	if err != nil {
 		return false, err
 	}
+	fmt.Println("out :", string(out))
 
 	rdr := bytes.NewReader(out)
 	var responseBody ReturnBillResponse
@@ -237,6 +239,8 @@ func (b ebarimtcli) CheckApi() (*CheckResponse, error) {
 	if err != nil {
 		return nil, err
 	}
+	fmt.Println("out :", string(out))
+
 	rdr := bytes.NewReader(out)
 
 	err = json.NewDecoder(rdr).Decode(&responseBody)
