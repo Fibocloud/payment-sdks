@@ -127,6 +127,7 @@ func (b ebarimtcli) GetNewEBarimt(bodyraw *CreateEbarimtInput) (*CreateEbarimtRe
 	body.CustomerNo = bodyraw.CustomerNo
 	requestByte, _ = json.Marshal(body)
 
+	fmt.Println("params: ", "'%s'", fmt.Sprintf("'%s'", fmt.Sprintf("'%s'", string(requestByte))))
 	out, err := exec.Command("ebarimt", "put", fmt.Sprintf("'%s'", fmt.Sprintf("'%s'", string(requestByte)))).Output()
 	if err != nil {
 		return nil, err
@@ -173,6 +174,7 @@ func (b ebarimt) ReturnBill(billId, date string) (bool, error) {
 	if err != nil {
 		return false, err
 	}
+
 	resp, err = http.Post(url, "application/json", bytes.NewReader(body))
 	if err != nil {
 		return false, err
@@ -198,6 +200,8 @@ func (b ebarimtcli) ReturnBill(billId, date string) (bool, error) {
 	if err != nil {
 		return false, err
 	}
+	fmt.Println("params: ", "'%s'", fmt.Sprintf("'%s'", fmt.Sprintf("'%s'", string(body))))
+
 	out, err := exec.Command("ebarimt", "return_bill", fmt.Sprintf("'%s'", string(body))).Output()
 	if err != nil {
 		return false, err
