@@ -66,6 +66,7 @@ type CreateEbarimtResponse struct {
 	MerchantId    string  `json:"merchantId"`
 	Success       bool    `json:"success"`
 	Message       string  `json:"message"`
+	ErrorCode     string  `json:"errorCode"`
 }
 
 type CheckAPIItem struct {

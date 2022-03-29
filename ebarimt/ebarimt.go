@@ -14,6 +14,7 @@ type ebarimt struct {
 }
 
 type ebarimtcli struct {
+	endpoint string
 }
 
 type Ebarimt interface {
@@ -29,8 +30,10 @@ func New(endpoint string) Ebarimt {
 	}
 }
 
-func NewCli() Ebarimt {
-	return ebarimtcli{}
+func NewCli(endpoint string) Ebarimt {
+	return ebarimt{
+		endpoint: endpoint,
+	}
 }
 
 func float64ToString(f float64) string {
@@ -94,7 +97,6 @@ func (b ebarimt) GetNewEBarimt(bodyraw *CreateEbarimtInput) (*CreateEbarimtRespo
 	if body == nil {
 		requestBody = bytes.NewReader(nil)
 	} else {
-		body.CustomerNo = bodyraw.CustomerNo
 		requestByte, _ = json.Marshal(body)
 		requestBody = bytes.NewReader(requestByte)
 	}
@@ -152,7 +154,7 @@ func (b ebarimtcli) SendData() error {
 }
 
 func (b ebarimt) SendData() error {
-	resp, err := http.Get(b.endpoint + "sendData")
+	resp, err := http.Get(b.endpoint + "/sendData")
 	if err != nil {
 		return err
 	}
