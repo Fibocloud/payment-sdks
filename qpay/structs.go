@@ -16,17 +16,17 @@ type (
 		SenderCode    string
 		ReceiverCode  string
 		Description   string
-		Amount        float64
+		Amount        int32
 		CallbackParam map[string]string
 	}
 
 	QPaySimpleInvoiceRequest struct {
-		InvoiceCode         string  `json:"invoice_code"`          // qpay-ээс өгсөн нэхэмжлэхийн код
-		SenderInvoiceCode   string  `json:"sender_invoice_no"`     // Байгууллагаас үүсгэх давтагдашгүй нэхэмжлэлийн дугаар
-		InvoiceReceiverCode string  `json:"invoice_receiver_code"` // Байгууллагын нэхэмжлэхийг хүлээн авч буй харилцагчийн дахин давтагдашгүй дугаар
-		InvoiceDescription  string  `json:"invoice_description"`   // Нэхэмжлэлийн утга
-		Amount              float64 `json:"amount"`                // Мөнгөн дүн
-		CallbackUrl         string  `json:"callback_url"`
+		InvoiceCode         string `json:"invoice_code"`          // qpay-ээс өгсөн нэхэмжлэхийн код
+		SenderInvoiceCode   string `json:"sender_invoice_no"`     // Байгууллагаас үүсгэх давтагдашгүй нэхэмжлэлийн дугаар
+		InvoiceReceiverCode string `json:"invoice_receiver_code"` // Байгууллагын нэхэмжлэхийг хүлээн авч буй харилцагчийн дахин давтагдашгүй дугаар
+		InvoiceDescription  string `json:"invoice_description"`   // Нэхэмжлэлийн утга
+		Amount              int64  `json:"amount"`                // Мөнгөн дүн
+		CallbackUrl         string `json:"callback_url"`
 	}
 
 	QPaySimpleInvoiceResponse struct {
