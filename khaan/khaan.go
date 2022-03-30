@@ -44,7 +44,7 @@ type OrderRegisterInput struct {
 type KhaanRequestBody struct {
 	Username string `json:"userName"`
 	Password string `json:"Password"`
-	Language string `json: "language"`
+	Language string `json:"language"`
 }
 
 type OrderRequest struct {
