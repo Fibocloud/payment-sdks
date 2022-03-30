@@ -60,27 +60,27 @@ var (
 // }
 
 func (q *qpay) httpRequestQPay(body interface{}, api utils.API, urlExt string) (response []byte, err error) {
-	if q.loginObject == nil || time.Now().Unix() > int64(q.loginObject.RefreshExpiresIn) {
+	// if q.loginObject == nil || time.Now().Unix() > int64(q.loginObject.RefreshExpiresIn) {
 
-		authObj, authErr := q.authQPayV2()
-		if authErr != nil {
-			err = authErr
-			return
-		}
-
-		q.loginObject = &authObj
-
+	authObj, authErr := q.authQPayV2()
+	if authErr != nil {
+		err = authErr
+		return
 	}
 
-	if time.Now().Unix() > int64(q.loginObject.ExpiresIn) {
-		authObj, authErr := q.refreshToken()
-		if authErr != nil {
-			err = authErr
-			return
-		}
+	q.loginObject = &authObj
 
-		q.loginObject = &authObj
-	}
+	// }
+
+	// if time.Now().Unix() > int64(q.loginObject.ExpiresIn) {
+	// 	authObj, authErr := q.refreshToken()
+	// 	if authErr != nil {
+	// 		err = authErr
+	// 		return
+	// 	}
+
+	// 	q.loginObject = &authObj
+	// }
 
 	var requestByte []byte
 	var requestBody *bytes.Reader
