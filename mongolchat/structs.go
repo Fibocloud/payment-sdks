@@ -1,4 +1,4 @@
-package upoint
+package mongolchat
 
 type (
 	MchatQrGenerateInput struct {
