@@ -1,6 +1,17 @@
 package socialpay
 
 type (
+	UPointCheckUserInfoInput struct {
+		CardNumber string `json:"card_number"`
+		Mobile     string `json:"mobile"`
+		PinCode    string `json:"pin_code"`
+	}
+
+	UpointProcessTransactionInput struct {
+		Mobile     string `json:"mobile"`
+		CardNumber string `json:"card_number"`
+	}
+
 	SocialPayInvoicePhoneRequest struct {
 		Phone    string `json:"phone"`
 		Amount   string `json:"amount"`
