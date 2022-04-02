@@ -30,36 +30,36 @@ type (
 	}
 
 	UpointBankRequest struct {
-		BankCode      string  `gorm:"column:bank_code" json:"bank_code"`             // Банкны код
-		NonCashAmount float64 `gorm:"column:non_cash_amount" json:"non_cash_amount"` // Бэлэн бусаар төлсөн дүн
+		BankCode      string  `json:"bank_code"`       // Банкны код
+		NonCashAmount float64 `json:"non_cash_amount"` // Бэлэн бусаар төлсөн дүн
 	}
 	UpointBankResponse struct {
-		BankCode      string `gorm:"column:bank_code" json:"bank_code"`             // Банкны код
-		Point         string `gorm:"column:point" json:"point"`                     // Тухайн гүйлгээнд өгсөн оноо
-		NonCashAmount string `gorm:"column:non_cash_amount" json:"non_cash_amount"` // Бэлэн бусаар төлсөн дүн
+		BankCode      string `json:"bank_code"`       // Банкны код
+		Point         string `json:"point"`           // Тухайн гүйлгээнд өгсөн оноо
+		NonCashAmount string `json:"non_cash_amount"` // Бэлэн бусаар төлсөн дүн
 	}
 	UpointManufacturerRequest struct {
-		ManufacturerCode   string  `gorm:"column:manufacturer_code" json:"manufacturer_code"`     // Үйлдвэрлэгчийн код
-		ManufacturerAmount float64 `gorm:"column:manufacturer_amount" json:"manufacturer_amount"` // Үйлдвэрлэгчийн барааны нийт дүн
+		ManufacturerCode   string  `json:"manufacturer_code"`   // Үйлдвэрлэгчийн код
+		ManufacturerAmount float64 `json:"manufacturer_amount"` // Үйлдвэрлэгчийн барааны нийт дүн
 	}
 	UpointManufacturerResponse struct {
-		ManufacturerCode   string `gorm:"column:manufacturer_code" json:"manufacturer_code"`     // Үйлдвэрлэгчийн код
-		ManufacturerAmount string `gorm:"column:manufacturer_amount" json:"manufacturer_amount"` // Үйлдвэрлэгчийн барааны нийт дүн
-		Point              string `gorm:"column:point" json:"point"`                             // Үйлдвэрлэгчээс үүссэн нийт оноо
+		ManufacturerCode   string `json:"manufacturer_code"`   // Үйлдвэрлэгчийн код
+		ManufacturerAmount string `json:"manufacturer_amount"` // Үйлдвэрлэгчийн барааны нийт дүн
+		Point              string `json:"point"`               // Үйлдвэрлэгчээс үүссэн нийт оноо
 	}
 	UpointItemRequest struct {
-		Code       string  `gorm:"column:code" json:"code"`               // Зураасан код эсвэл байгууллагын дотоод код
-		Name       string  `gorm:"column:name" json:"name"`               // Барааны нэр
-		Unit       string  `gorm:"column:unit" json:"unit"`               // Хэмжих нэгж
-		Quantity   float64 `gorm:"column:quantity" json:"quantity"`       // Тоо, хэмжээ
-		Price      float64 `gorm:"column:price" json:"price"`             // Нэгж үнэ
-		TotalPrice float64 `gorm:"column:total_price" json:"total_price"` // Нийт үнэ
+		Code       string  `json:"code"`        // Зураасан код эсвэл байгууллагын дотоод код
+		Name       string  `json:"name"`        // Барааны нэр
+		Unit       string  `json:"unit"`        // Хэмжих нэгж
+		Quantity   float64 `json:"quantity"`    // Тоо, хэмжээ
+		Price      float64 `json:"price"`       // Нэгж үнэ
+		TotalPrice float64 `json:"total_price"` // Нийт үнэ
 	}
 	UpointItemResponse struct {
-		Barcode   string  `gorm:"column:barcode" json:"barcode"`       // Зураасан код эсвэл байгууллагын дотоод код
-		Point     string  `gorm:"column:point" json:"point"`           // Тухайн бүтээгдэхүүн дээр өгсөн оноо
-		Quantity  float64 `gorm:"column:qty" json:"qty"`               // Тоо, хэмжээ
-		UnitPoint string  `gorm:"column:unit_point" json:"unit_point"` // Хэмжих нэгж
+		Barcode   string  `json:"barcode"`    // Зураасан код эсвэл байгууллагын дотоод код
+		Point     string  `json:"point"`      // Тухайн бүтээгдэхүүн дээр өгсөн оноо
+		Quantity  float64 `json:"qty"`        // Тоо, хэмжээ
+		UnitPoint string  `json:"unit_point"` // Хэмжих нэгж
 	}
 	UpointTransactionRequest struct {
 		CardNumber   string                      `json:"card_number"`  // U-Point картын дугаар ***
