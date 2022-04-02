@@ -21,7 +21,7 @@ type QPay interface {
 	GetInvoice(invoiceId string) (QpayInvoiceGetResponse, error)
 	CancelInvoice(invoiceId string) (interface{}, error)
 	GetPayment(invoiceId string) (interface{}, error)
-	CheckPayment(invoiceId string, pageLimit, pageNumber int32) (QpayPaymentCheckResponse, error)
+	CheckPayment(invoiceId string, pageLimit, pageNumber int64) (QpayPaymentCheckResponse, error)
 	CancelPayment(invoiceId, paymentUUID string) (QpayPaymentCheckResponse, error)
 	RefundPayment(invoiceId, paymentUUID string) (interface{}, error)
 	// GetPaymentList()
@@ -100,7 +100,7 @@ func (q *qpay) GetPayment(invoiceId string) (interface{}, error) {
 	return response, nil
 }
 
-func (q *qpay) CheckPayment(invoiceId string, pageLimit, pageNumber int32) (QpayPaymentCheckResponse, error) {
+func (q *qpay) CheckPayment(invoiceId string, pageLimit, pageNumber int64) (QpayPaymentCheckResponse, error) {
 	req := QpayPaymentCheckRequest{}
 	req.ObjectID = invoiceId
 	req.ObjectType = "INVOICE"

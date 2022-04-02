@@ -5,8 +5,8 @@ import (
 	"strconv"
 )
 
-// Int32Pointer Get int32 pointer
-func Int32Pointer(i int32) *int32 {
+// int64Pointer Get int64 pointer
+func int64Pointer(i int64) *int64 {
 	return &i
 }
 

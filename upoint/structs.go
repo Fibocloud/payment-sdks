@@ -13,7 +13,7 @@ type (
 		UAID       string  `json:"ua_id"`       // Хэрэглэгчийн дахин давтагдашгүй дугаар
 		CardNumber string  `json:"card_number"` // Хэрэглэгчийн картын дугаар
 		Mobile     string  `json:"mobile"`      // Хэрэглэгчийн утасны дугаар
-		Balance    float32 `json:"balance"`     // Хэрэглэгчийн онооны үлдэгдэл
+		Balance    float64 `json:"balance"`     // Хэрэглэгчийн онооны үлдэгдэл
 		Result     int     `json:"result"`      // Алдааны мэдээллийн код
 		Message    string  `json:"message"`     // Алдааны мэдээллийн тайлбар
 	}
@@ -22,7 +22,7 @@ type (
 		UAID       string  `json:"ua_id"`
 		Mobile     string  `json:"modile"`
 		Message    string  `json:"message"`
-		Balance    float32 `json:"balance"`
+		Balance    float64 `json:"balance"`
 		CardStatus int     `json:"card_status"`
 		CreatedAt  string  `json:"created_at"`
 		CardNumber string  `json:"card_number"`
@@ -31,7 +31,7 @@ type (
 
 	UpointBankRequest struct {
 		BankCode      string  `gorm:"column:bank_code" json:"bank_code"`             // Банкны код
-		NonCashAmount float32 `gorm:"column:non_cash_amount" json:"non_cash_amount"` // Бэлэн бусаар төлсөн дүн
+		NonCashAmount float64 `gorm:"column:non_cash_amount" json:"non_cash_amount"` // Бэлэн бусаар төлсөн дүн
 	}
 	UpointBankResponse struct {
 		BankCode      string `gorm:"column:bank_code" json:"bank_code"`             // Банкны код
@@ -40,7 +40,7 @@ type (
 	}
 	UpointManufacturerRequest struct {
 		ManufacturerCode   string  `gorm:"column:manufacturer_code" json:"manufacturer_code"`     // Үйлдвэрлэгчийн код
-		ManufacturerAmount float32 `gorm:"column:manufacturer_amount" json:"manufacturer_amount"` // Үйлдвэрлэгчийн барааны нийт дүн
+		ManufacturerAmount float64 `gorm:"column:manufacturer_amount" json:"manufacturer_amount"` // Үйлдвэрлэгчийн барааны нийт дүн
 	}
 	UpointManufacturerResponse struct {
 		ManufacturerCode   string `gorm:"column:manufacturer_code" json:"manufacturer_code"`     // Үйлдвэрлэгчийн код
@@ -51,14 +51,14 @@ type (
 		Code       string  `gorm:"column:code" json:"code"`               // Зураасан код эсвэл байгууллагын дотоод код
 		Name       string  `gorm:"column:name" json:"name"`               // Барааны нэр
 		Unit       string  `gorm:"column:unit" json:"unit"`               // Хэмжих нэгж
-		Quantity   float32 `gorm:"column:quantity" json:"quantity"`       // Тоо, хэмжээ
-		Price      float32 `gorm:"column:price" json:"price"`             // Нэгж үнэ
-		TotalPrice float32 `gorm:"column:total_price" json:"total_price"` // Нийт үнэ
+		Quantity   float64 `gorm:"column:quantity" json:"quantity"`       // Тоо, хэмжээ
+		Price      float64 `gorm:"column:price" json:"price"`             // Нэгж үнэ
+		TotalPrice float64 `gorm:"column:total_price" json:"total_price"` // Нийт үнэ
 	}
 	UpointItemResponse struct {
 		Barcode   string  `gorm:"column:barcode" json:"barcode"`       // Зураасан код эсвэл байгууллагын дотоод код
 		Point     string  `gorm:"column:point" json:"point"`           // Тухайн бүтээгдэхүүн дээр өгсөн оноо
-		Quantity  float32 `gorm:"column:qty" json:"qty"`               // Тоо, хэмжээ
+		Quantity  float64 `gorm:"column:qty" json:"qty"`               // Тоо, хэмжээ
 		UnitPoint string  `gorm:"column:unit_point" json:"unit_point"` // Хэмжих нэгж
 	}
 	UpointTransactionRequest struct {
@@ -67,10 +67,10 @@ type (
 		Mobile       string                      `json:"mobile"`       // Хэрэглэгчийн утасны дугаар (Хэрэглэгчид шинээр карт  олгосон үед утгатай байна, бусад үед null байна)***
 		Date         string                      `json:"date"`         // Биллийн огноо (YYYY/MM/DD HH:mm:ss) ***
 		BillNumber   string                      `json:"bill_number"`  // Биллийн дугаар ***
-		SpendAmount  float32                     `json:"spend_amount"` // Зарцуулах онооны дүн ( 0-р илгээх боломжтой) ***
-		BonusAmount  float32                     `json:"bonus_amount"` // Оноо үүсгэх дүн ( 0-р илгээх боломжтой) ***
-		TotalAmount  float32                     `json:"total_amount"` // Нийт дүн ( 0-р илгээх боломжтой) ***
-		CashAmount   float32                     `json:"cash_amount"`  // Бэлнээр төлсөн дүн ( 0-р илгээх боломжтой)
+		SpendAmount  float64                     `json:"spend_amount"` // Зарцуулах онооны дүн ( 0-р илгээх боломжтой) ***
+		BonusAmount  float64                     `json:"bonus_amount"` // Оноо үүсгэх дүн ( 0-р илгээх боломжтой) ***
+		TotalAmount  float64                     `json:"total_amount"` // Нийт дүн ( 0-р илгээх боломжтой) ***
+		CashAmount   float64                     `json:"cash_amount"`  // Бэлнээр төлсөн дүн ( 0-р илгээх боломжтой)
 		TerminalID   string                      `json:"terminal_id"`  // ПОС төхөөрөмжийн давтагдахгүй дугаар
 		Bank         []UpointBankRequest         `json:"bank"`         // Бэлэн бусаар төлсөн мэдээлэл (хоосон илгээх боломжтой) ***
 		Manufacturer []UpointManufacturerRequest `json:"manufacturer"` // Үйлдвэрлэгч болон Импортлогчийн урамшуулал (хоосон илгээх боломжтой) ***
@@ -80,33 +80,33 @@ type (
 		ReceiptID              string                       `json:"receipt_id"`               // U-Point гүйлгээний ID
 		Date                   string                       `json:"date"`                     // Биллийн огноо (YYYY/MM/DD HH:mm:ss)
 		CardNumber             string                       `json:"card_number"`              // U-Point картын дугаар
-		PointBalance           float32                      `json:"point_balance"`            // Хэрэглэгчийн онооны үлдэгдэл
-		TotalPoint             float32                      `json:"total_point"`              // Гүйлгээнээс үүссэн оноо
-		MerchantPoint          float32                      `json:"merchant_point"`           // Үнийн дүнгээс бодогдож өгсөн оноо
-		ManufacturerItemsPoint float32                      `json:"manufacturer_items_point"` // Үйлдвэрлэгч болон импортлогчоос өгсөн оноо
-		SpendPoint             float32                      `json:"spend_point"`              // Зарцуулагдсан онооны дүн
+		PointBalance           float64                      `json:"point_balance"`            // Хэрэглэгчийн онооны үлдэгдэл
+		TotalPoint             float64                      `json:"total_point"`              // Гүйлгээнээс үүссэн оноо
+		MerchantPoint          float64                      `json:"merchant_point"`           // Үнийн дүнгээс бодогдож өгсөн оноо
+		ManufacturerItemsPoint float64                      `json:"manufacturer_items_point"` // Үйлдвэрлэгч болон импортлогчоос өгсөн оноо
+		SpendPoint             float64                      `json:"spend_point"`              // Зарцуулагдсан онооны дүн
 		BillNumber             string                       `json:"bill_number"`              // Биллийн дугаар
 		Bank                   []UpointBankResponse         `json:"bank"`                     // Бэлэн бус гүйлгээ хийсэн тохиолдолд банкуудаас өгөх оноо
 		Items                  []UpointItemResponse         `json:"items"`                    // Борлуулсан бүтээгдэхүүний мэдээллийн жагсаалт
-		ManufacturerPoint      float32                      `json:"manufacturer_point"`       // Үйлдвэрлэгч болон импортлогчоос урамшуулалт оноо
+		ManufacturerPoint      float64                      `json:"manufacturer_point"`       // Үйлдвэрлэгч болон импортлогчоос урамшуулалт оноо
 		Manufacturer           []UpointManufacturerResponse `json:"manufacturer"`             // Үйлдвэрлэгч
-		Result                 float32                      `json:"result"`                   // Алдааны мэдээллийн код
+		Result                 float64                      `json:"result"`                   // Алдааны мэдээллийн код
 		Message                string                       `json:"message"`                  // Алдааны мэдээллийн тайлбар
-		BankPoint              float32                      `json:"bank_point"`               // Банкнаас үүссэн оноо
+		BankPoint              float64                      `json:"bank_point"`               // Банкнаас үүссэн оноо
 	}
 	UpointReturnTransactionResponse struct {
 		InvoiceUUID        string                        `json:"invoice_uuid"`        // Нэхэмжлэхийн uuid
 		ReceiptID          string                        `json:"receipt_id"`          // U-Point гүйлгээний ID
-		ReturnReceiptID    float32                       `json:"return_receipt_id"`   // Буцаалтын талоны ID
-		ManufacturerAmount float32                       `json:"manufacturer_amount"` // Үйлдвэрлэгчийн барааны нийт дүн
-		RefundSpendPoint   float32                       `json:"refund_spend_point"`  // Өмнөх гүйлгээнд зарцуулагдсан онооноос буцаах дүн
-		RefundBonusAmount  float32                       `json:"refund_bonus_point"`  // Өмнөх гүйлгээнээс нэмэгдсэн онооноос буцаах дүн
+		ReturnReceiptID    float64                       `json:"return_receipt_id"`   // Буцаалтын талоны ID
+		ManufacturerAmount float64                       `json:"manufacturer_amount"` // Үйлдвэрлэгчийн барааны нийт дүн
+		RefundSpendPoint   float64                       `json:"refund_spend_point"`  // Өмнөх гүйлгээнд зарцуулагдсан онооноос буцаах дүн
+		RefundBonusAmount  float64                       `json:"refund_bonus_point"`  // Өмнөх гүйлгээнээс нэмэгдсэн онооноос буцаах дүн
 		Result             int                           `json:"result"`              // Алдааны мэдээллийн код
 		Message            string                        `json:"message"`             // Алдааны мэдээллийн тайлбар
 		BillNumber         string                        `json:"bill_number"`         // Биллийн дугаар
-		PointBalance       float32                       `json:"point_balance"`       // Хэрэглэгчийн U-point үлдэгдэл
-		ItemAmount         float32                       `json:"item_amount"`         // Буцаалт хийсэн талоны бараанаас үүссэн оноо
-		BankAmount         float32                       `json:"bank_amount"`         // Буцаалт хийсэн талоны банкнаас үүссэн оноо
+		PointBalance       float64                       `json:"point_balance"`       // Хэрэглэгчийн U-point үлдэгдэл
+		ItemAmount         float64                       `json:"item_amount"`         // Буцаалт хийсэн талоны бараанаас үүссэн оноо
+		BankAmount         float64                       `json:"bank_amount"`         // Буцаалт хийсэн талоны банкнаас үүссэн оноо
 		Bank               []*UpointBankResponse         `json:"bank"`                // Бэлэн бус гүйлгээ хийсэн тохиолдолд банкны мэдээлэл
 		Manufacturer       []*UpointManufacturerResponse `json:"manufacturer"`        // Үйлдвэрлэгч болон Импортлогчийн урамшуулал
 		Items              []*UpointItemResponse         `json:"items"`               // Борлуулсан бүтээгдэхүүний мэдээллийн жагсаалт
@@ -115,13 +115,13 @@ type (
 		QrString     string                      `json:"qr_string"`    // Qr текст
 		Date         string                      `json:"date"`         // Биллийн огноо (YYYY/MM/DD HH:mm:ss) ***
 		BillNumber   string                      `json:"bill_number"`  // Биллийн дугаар ***
-		SpendAmount  float32                     `json:"spend_amount"` // Зарцуулах онооны дүн ( 0-р илгээх боломжтой) ***
-		BonusAmount  float32                     `json:"bonus_amount"` // Оноо үүсгэх дүн ( 0-р илгээх боломжтой) ***
-		TotalAmount  float32                     `json:"total_amount"` // Нийт дүн ( 0-р илгээх боломжтой) ***
-		CashAmount   float32                     `json:"cash_amount"`  // Бэлнээр төлсөн дүн ( 0-р илгээх боломжтой)
+		SpendAmount  float64                     `json:"spend_amount"` // Зарцуулах онооны дүн ( 0-р илгээх боломжтой) ***
+		BonusAmount  float64                     `json:"bonus_amount"` // Оноо үүсгэх дүн ( 0-р илгээх боломжтой) ***
+		TotalAmount  float64                     `json:"total_amount"` // Нийт дүн ( 0-р илгээх боломжтой) ***
+		CashAmount   float64                     `json:"cash_amount"`  // Бэлнээр төлсөн дүн ( 0-р илгээх боломжтой)
 		TerminalID   string                      `json:"terminal_id"`  // ПОС төхөөрөмжийн давтагдахгүй дугаар
-		BonusPoint   float32                     `json:"bonus_point"`
-		Percent      float32                     `json:"percent"`
+		BonusPoint   float64                     `json:"bonus_point"`
+		Percent      float64                     `json:"percent"`
 		Bank         []UpointBankRequest         `json:"bank"`         // Бэлэн бусаар төлсөн мэдээлэл (хоосон илгээх боломжтой) ***
 		Manufacturer []UpointManufacturerRequest `json:"manufacturer"` // Үйлдвэрлэгч болон Импортлогчийн урамшуулал (хоосон илгээх боломжтой) ***
 		Items        []UpointItemRequest         `json:"items"`        // Урамшуулсан бүтээгдэхүүний мэдээллийн жагсаалт (хоосон  илгээх боломжтой) ***
@@ -130,15 +130,15 @@ type (
 		ReceiptID              string                       `json:"receipt_id"`               // U-Point гүйлгээний ID
 		Date                   string                       `json:"date"`                     // Биллийн огноо (YYYY/MM/DD HH:mm:ss)
 		CardNumber             string                       `json:"card_number"`              // U-Point картын дугаар
-		PointBalance           float32                      `json:"point_balance"`            // Хэрэглэгчийн онооны үлдэгдэл
-		TotalPoint             float32                      `json:"total_point"`              // Гүйлгээнээс үүссэн оноо
-		MerchantPoint          float32                      `json:"merchant_point"`           // Үнийн дүнгээс бодогдож өгсөн оноо
-		ManufacturerItemsPoint float32                      `json:"manufacturer_items_point"` // Үйлдвэрлэгч болон импортлогчоос өгсөн оноо
-		SpendPoint             float32                      `json:"spend_point"`              // Зарцуулагдсан онооны дүн
+		PointBalance           float64                      `json:"point_balance"`            // Хэрэглэгчийн онооны үлдэгдэл
+		TotalPoint             float64                      `json:"total_point"`              // Гүйлгээнээс үүссэн оноо
+		MerchantPoint          float64                      `json:"merchant_point"`           // Үнийн дүнгээс бодогдож өгсөн оноо
+		ManufacturerItemsPoint float64                      `json:"manufacturer_items_point"` // Үйлдвэрлэгч болон импортлогчоос өгсөн оноо
+		SpendPoint             float64                      `json:"spend_point"`              // Зарцуулагдсан онооны дүн
 		BillNumber             string                       `json:"bill_number"`              // Биллийн дугаар
 		Bank                   []UpointBankResponse         `json:"bank"`                     // Бэлэн бус гүйлгээ хийсэн тохиолдолд банкуудаас өгөх оноо
 		Items                  []UpointItemResponse         `json:"items"`                    // Борлуулсан бүтээгдэхүүний мэдээллийн жагсаалт
-		ManufacturerPoint      float32                      `json:"manufacturer_point"`       // Үйлдвэрлэгч болон импортлогчоос урамшуулалт оноо
+		ManufacturerPoint      float64                      `json:"manufacturer_point"`       // Үйлдвэрлэгч болон импортлогчоос урамшуулалт оноо
 		Manufacturer           []UpointManufacturerResponse `json:"manufacturer"`             // Үйлдвэрлэгч
 		Result                 int                          `json:"result"`                   // Алдааны мэдээллийн код
 		Message                string                       `json:"message"`                  // Алдааны мэдээллийн тайлбар
@@ -146,9 +146,9 @@ type (
 	}
 	UpointReturnTransactionRequest struct {
 		ReceiptID         string                      `json:"receipt_id"`          // U-Point гүйлгээний ID
-		RefundSpendAmount float32                     `json:"refund_spend_amount"` // Өмнөх гүйлгээнд зарцуулагдсан онооноос буцаах дүн
-		RefundBonusAmount float32                     `json:"refund_bonus_amount"` // Өмнөх гүйлгээнээс нэмэгдсэн онооноос буцаах дүн
-		RefundCashAmount  float32                     `json:"refund_cash_amount"`  // Гүйлгээнд үүссэн онооноос буцаах боломжгүй болсон оноог  мөнгөн дүнгээр авсан дүн
+		RefundSpendAmount float64                     `json:"refund_spend_amount"` // Өмнөх гүйлгээнд зарцуулагдсан онооноос буцаах дүн
+		RefundBonusAmount float64                     `json:"refund_bonus_amount"` // Өмнөх гүйлгээнээс нэмэгдсэн онооноос буцаах дүн
+		RefundCashAmount  float64                     `json:"refund_cash_amount"`  // Гүйлгээнд үүссэн онооноос буцаах боломжгүй болсон оноог  мөнгөн дүнгээр авсан дүн
 		TerminalID        string                      `json:"terminal_id"`         // ПОС төхөөрөмжийн давтагдахгүй дугаар
 		Bank              []UpointBankRequest         `json:"bank"`                // Бэлэн бус гүйлгээ хийсэн тохиолдолд банкны мэдээлэл
 		Manufacturer      []UpointManufacturerRequest `json:"manufacturer"`        // Үйлдвэрлэгч болон Импортлогчийн урамшуулал
@@ -165,12 +165,12 @@ type (
 		PointBalance           int                          `json:"point_balance"`            // Хэрэглэгчийн онооны үлдэгдэл
 		TotalPoint             int                          `json:"total_point"`              // Гүйлгээнээс үүссэн оноо
 		MerchantPoint          int                          `json:"merchant_point"`           // Үнийн дүнгээс бодогдож өгсөн оноо
-		ManufacturerItemsPoint float32                      `json:"manufacturer_items_point"` // Үйлдвэрлэгч болон импортлогчоос өгсөн оноо
-		SpendPoint             float32                      `json:"spend_point"`              // Зарцуулагдсан онооны дүн
+		ManufacturerItemsPoint float64                      `json:"manufacturer_items_point"` // Үйлдвэрлэгч болон импортлогчоос өгсөн оноо
+		SpendPoint             float64                      `json:"spend_point"`              // Зарцуулагдсан онооны дүн
 		BillNumber             string                       `json:"bill_number"`              // Биллийн дугаар
 		Bank                   []UpointBankResponse         `json:"bank"`                     // Бэлэн бус гүйлгээ хийсэн тохиолдолд банкуудаас өгөх оноо
 		Items                  []UpointItemResponse         `json:"items"`                    // Борлуулсан бүтээгдэхүүний мэдээллийн жагсаалт
-		ManufacturerPoint      float32                      `json:"manufacturer_point"`       // Үйлдвэрлэгч болон импортлогчоос урамшуулалт оноо
+		ManufacturerPoint      float64                      `json:"manufacturer_point"`       // Үйлдвэрлэгч болон импортлогчоос урамшуулалт оноо
 		Manufacturer           []UpointManufacturerResponse `json:"manufacturer"`             // Үйлдвэрлэгч
 		Result                 int                          `json:"result"`                   // Алдааны мэдээллийн код
 		Message                string                       `json:"message"`                  // Алдааны мэдээллийн тайлбар
@@ -185,23 +185,23 @@ type (
 	}
 	UpointCancelTransactionRequest struct {
 		BillNumber string  `json:"bill_number"` // Биллийн дугаар
-		CashAmount float32 `json:"cash_amount"` // Бэлнээр төлсөн дүн ( 0-р илгээх боломжтой)
+		CashAmount float64 `json:"cash_amount"` // Бэлнээр төлсөн дүн ( 0-р илгээх боломжтой)
 	}
 	UpointCancelTransactionResponse struct {
 		ReceiptID         string                        `json:"receipt_id"`          // U-Point гүйлгээний ID
-		ReturnReceiptID   float32                       `json:"return_receipt_id"`   // Буцаалтын талоны ID
+		ReturnReceiptID   float64                       `json:"return_receipt_id"`   // Буцаалтын талоны ID
 		Bank              []*UpointBankResponse         `json:"bank"`                // Бэлэн бус гүйлгээ хийсэн тохиолдолд банкны мэдээлэл
 		Manufacturer      []*UpointManufacturerResponse `json:"manufacturer"`        // Үйлдвэрлэгч болон Импортлогчийн урамшуулал
 		Items             []*UpointItemResponse         `json:"items"`               // Борлуулсан бүтээгдэхүүний мэдээллийн жагсаалт
-		ManufacturerPoint float32                       `json:"manufacturer_point"`  // Үйлдвэрлэгчийн барааны нийт дүн
-		RefundSpendPoint  float32                       `json:"refund_spend_point"`  // Өмнөх гүйлгээнд зарцуулагдсан онооноос буцаах дүн
-		RefundBonusAmount float32                       `json:"refund_bonus_amount"` // Өмнөх гүйлгээнээс нэмэгдсэн онооноос буцаах дүн
+		ManufacturerPoint float64                       `json:"manufacturer_point"`  // Үйлдвэрлэгчийн барааны нийт дүн
+		RefundSpendPoint  float64                       `json:"refund_spend_point"`  // Өмнөх гүйлгээнд зарцуулагдсан онооноос буцаах дүн
+		RefundBonusAmount float64                       `json:"refund_bonus_amount"` // Өмнөх гүйлгээнээс нэмэгдсэн онооноос буцаах дүн
 		Result            int                           `json:"result"`              // Алдааны мэдээллийн код
 		Message           string                        `json:"message"`             // Алдааны мэдээллийн тайлбар
 		BillNumber        string                        `json:"bill_number"`         // Биллийн дугаар
-		PointBalance      float32                       `json:"point_balance"`       // Хэрэглэгчийн U-point үлдэгдэл
-		ItemAmount        float32                       `json:"item_amount"`         // Буцаалт хийсэн талоны бараанаас үүссэн оноо
-		BankAmount        float32                       `json:"bank_amount"`         // Буцаалт хийсэн талоны банкнаас үүссэн оноо
+		PointBalance      float64                       `json:"point_balance"`       // Хэрэглэгчийн U-point үлдэгдэл
+		ItemAmount        float64                       `json:"item_amount"`         // Буцаалт хийсэн талоны бараанаас үүссэн оноо
+		BankAmount        float64                       `json:"bank_amount"`         // Буцаалт хийсэн талоны банкнаас үүссэн оноо
 	}
 	UpointQrResponse struct {
 		Code     string `json:"code"`

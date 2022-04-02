@@ -16,7 +16,7 @@ type (
 		SenderCode    string
 		ReceiverCode  string
 		Description   string
-		Amount        int32
+		Amount        int64
 		CallbackParam map[string]string
 	}
 
@@ -48,25 +48,25 @@ type (
 		AllowExceed        bool               `json:"allow_exceed"`
 		AllowPartial       bool               `json:"allow_partial"`
 		CallbackUrl        string             `json:"callback_url"`
-		DiscountAmount     int32              `json:"discount_amount"`
+		DiscountAmount     int64              `json:"discount_amount"`
 		EnableExpiry       bool               `json:"enable_expiry"`
 		ExpiryDate         string             `json:"expiry_date"`
-		GrossAmount        int32              `json:"gross_amount"`
+		GrossAmount        int64              `json:"gross_amount"`
 		Inputs             []*QpayInput       `json:"inputs"`
 		InvoiceDescription string             `json:"invoice_description"`
 		InvoiceDueDate     interface{}        `json:"invoice_due_date"`
 		InvoiceID          string             `json:"invoice_id"`
 		InvoiceStatus      string             `json:"invoice_status"`
 		Lines              []*QpayLine        `json:"lines"`
-		MaximumAmount      int32              `json:"maximum_amount"`
-		MinimumAmount      int32              `json:"minimum_amount"`
+		MaximumAmount      int64              `json:"maximum_amount"`
+		MinimumAmount      int64              `json:"minimum_amount"`
 		Note               string             `json:"note"`
 		SenderBranchCode   string             `json:"sender_branch_code"`
 		SenderBranchData   string             `json:"sender_branch_data"`
 		SenderInvoiceNo    string             `json:"sender_invoice_no"`
-		SurchargeAmount    int32              `json:"surcharge_amount"`
-		TaxAmount          int32              `json:"tax_amount"`
-		TotalAmount        int32              `json:"total_amount"`
+		SurchargeAmount    int64              `json:"surcharge_amount"`
+		TaxAmount          int64              `json:"tax_amount"`
+		TotalAmount        int64              `json:"total_amount"`
 		Transactions       []*QpayTransaction `json:"transactions"`
 	}
 
@@ -94,13 +94,13 @@ type (
 	}
 
 	QpayOffset struct {
-		PageNumber int32 `json:"page_number"` // Хуудасны тоо
-		PageLimit  int32 `json:"page_limit"`  // Хуудасны хязгаар max <= 100
+		PageNumber int64 `json:"page_number"` // Хуудасны тоо
+		PageLimit  int64 `json:"page_limit"`  // Хуудасны хязгаар max <= 100
 	}
 
 	QpayPaymentCheckResponse struct {
-		Count      int32      `json:"count"`       // Нийт гүйлгээний мөрийн тоо
-		PaidAmount int32      `json:"paid_amount"` // Гүйлгээний дүн
+		Count      int64      `json:"count"`       // Нийт гүйлгээний мөрийн тоо
+		PaidAmount int64      `json:"paid_amount"` // Гүйлгээний дүн
 		Rows       []*QpayRow `json:"rows"`        // Гүйлгээний мөр
 	}
 
