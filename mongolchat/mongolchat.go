@@ -38,7 +38,7 @@ func (s mongolchat) GenerateQR(input MchatOnlineQrGenerateRequest) (response Mch
 func (s mongolchat) CheckQR(qr string) (response MchatOnlineQrCheckResponse, err error) {
 	request := make(map[string]interface{})
 	request["qr"] = qr
-	res, err := s.httpRequestMongolChat(request, MchatOnlineQrGenerate)
+	res, err := s.httpRequestMongolChat(request, MchatOnlineQrcheck)
 	if err != nil {
 		return
 	}
