@@ -6,17 +6,11 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
-	"os/exec"
 )
 
 type ebarimt struct {
 	endpoint string
 }
-
-type ebarimtcli struct {
-	endpoint string
-}
-
 type Ebarimt interface {
 	GetNewEBarimt(*CreateEbarimtInput) (*CreateEbarimtResponse, error)
 	CheckApi() (*CheckResponse, error)
@@ -25,12 +19,6 @@ type Ebarimt interface {
 }
 
 func New(endpoint string) Ebarimt {
-	return ebarimt{
-		endpoint: endpoint,
-	}
-}
-
-func NewCli(endpoint string) Ebarimt {
 	return ebarimt{
 		endpoint: endpoint,
 	}
@@ -119,40 +107,6 @@ func (b ebarimt) GetNewEBarimt(bodyraw *CreateEbarimtInput) (*CreateEbarimtRespo
 	return &responseBody, nil
 }
 
-func (b ebarimtcli) GetNewEBarimt(bodyraw *CreateEbarimtInput) (*CreateEbarimtResponse, error) {
-	body := createInputToRequestBody(*bodyraw)
-	if bodyraw.BillType == EBarimtOrganizationType && body.CustomerNo == "" {
-		return nil, errors.New("CustomerNo is required")
-	}
-
-	var requestByte []byte
-	body.CustomerNo = bodyraw.CustomerNo
-	requestByte, _ = json.Marshal(body)
-
-	fmt.Println("params: ", fmt.Sprintf("'%s'", string(requestByte)))
-	out, err := exec.Command("ebarimt", "put", fmt.Sprintf("'%s'", string(requestByte))).Output()
-	if err != nil {
-		return nil, err
-	}
-	fmt.Println("out :", string(out))
-	var responseBody CreateEbarimtResponse
-	err = json.NewDecoder(bytes.NewReader(out)).Decode(&responseBody)
-	if err != nil {
-		return nil, err
-	}
-
-	return &responseBody, nil
-}
-
-func (b ebarimtcli) SendData() error {
-	out, err := exec.Command("ebarimt", "send_data").Output()
-	if err != nil {
-		return err
-	}
-	fmt.Println("out :", string(out))
-	return nil
-}
-
 func (b ebarimt) SendData() error {
 	resp, err := http.Get(b.endpoint + "/sendData")
 	if err != nil {
@@ -194,36 +148,9 @@ func (b ebarimt) ReturnBill(billId, date string) (bool, error) {
 	return responseBody.Success, nil
 }
 
-func (b ebarimtcli) ReturnBill(billId, date string) (bool, error) {
-	body, err := json.Marshal(map[string]string{
-		"returnBillId": billId,
-		"date":         date,
-	})
-	if err != nil {
-		return false, err
-	}
-	fmt.Println("params: ", fmt.Sprintf("'%s'", string(body)))
-
-	out, err := exec.Command("ebarimt", "return_bill", fmt.Sprintf("'%s'", string(body))).Output()
-	if err != nil {
-		return false, err
-	}
-	fmt.Println("out :", string(out))
-
-	rdr := bytes.NewReader(out)
-	var responseBody ReturnBillResponse
-
-	err = json.NewDecoder(rdr).Decode(&responseBody)
-	if err != nil {
-		return false, err
-	}
-
-	return responseBody.Success, nil
-}
-
 func (b ebarimt) CheckApi() (*CheckResponse, error) {
 	var responseBody CheckResponse
-	resp, err := http.Get(b.endpoint)
+	resp, err := http.Get(b.endpoint + "/checkApi")
 	if err != nil {
 		return &responseBody, err
 	}
@@ -237,21 +164,4 @@ func (b ebarimt) CheckApi() (*CheckResponse, error) {
 	}
 	return &responseBody, err
 
-}
-
-func (b ebarimtcli) CheckApi() (*CheckResponse, error) {
-	var responseBody CheckResponse
-	out, err := exec.Command("ebarimt", "check_api").Output()
-	if err != nil {
-		return nil, err
-	}
-	fmt.Println("out :", string(out))
-
-	rdr := bytes.NewReader(out)
-
-	err = json.NewDecoder(rdr).Decode(&responseBody)
-	if err != nil {
-		return nil, err
-	}
-	return &responseBody, nil
 }
