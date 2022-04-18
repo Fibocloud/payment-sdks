@@ -99,7 +99,7 @@ func (g golomt) CreateInvoice(input CreateInvoiceInput) (response CreateInvoiceR
 		return
 	}
 
-	fmt.Printf("golomt response: %v\n", res)
+	fmt.Printf("golomt response: %v\n", string(res))
 
 	if err = json.Unmarshal(res, &response); err != nil {
 		fmt.Println("Unmarshal: ", err)
