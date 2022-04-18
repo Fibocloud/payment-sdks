@@ -70,6 +70,8 @@ func (g golomt) PayByToken(amount float64, token string, transactionId string, l
 }
 
 func (g golomt) CreateInvoice(input CreateInvoiceInput) (response CreateInvoiceResponse, err error) {
+	fmt.Printf("golomt cred: %v\n", g)
+	fmt.Printf("golomt input: %v\n", input)
 	_amount := fmt.Sprintf("%.2f", input.Amount)
 
 	checksum := utils.GenerateHMAC(g.secret, utils.AppendAsString(
@@ -88,12 +90,19 @@ func (g golomt) CreateInvoice(input CreateInvoiceInput) (response CreateInvoiceR
 		ReturnType:    string(input.ReturnType),
 	}
 
+	fmt.Printf("checksum: %s\n", checksum)
+	fmt.Printf("golomt request: %v\n", request)
+
 	res, err := g.httpRequestGolomtEcommerce(request, ECommerceInvoiceCreate, g.endpoint)
 	if err != nil {
+		fmt.Println("error: ", err)
 		return
 	}
 
+	fmt.Printf("golomt response: %v\n", res)
+
 	if err = json.Unmarshal(res, &response); err != nil {
+		fmt.Println("Unmarshal: ", err)
 		return
 	}
 
