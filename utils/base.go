@@ -5,11 +5,6 @@ import (
 	"strconv"
 )
 
-// int64Pointer Get int64 pointer
-func int64Pointer(i int64) *int64 {
-	return &i
-}
-
 // StrToUint String to Uint parser
 func StrToUint(value string) (uint, error) {
 	u64, err := strconv.ParseUint(value, 10, 32)
