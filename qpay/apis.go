@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"time"
 
@@ -97,7 +97,7 @@ func (q *qpay) httpRequestQPay(body interface{}, api utils.API, urlExt string) (
 
 	res, err := http.DefaultClient.Do(req)
 
-	response, _ = ioutil.ReadAll(res.Body)
+	response, _ = io.ReadAll(res.Body)
 	if res.StatusCode != 200 {
 		return nil, errors.New(string(response))
 	}
@@ -123,7 +123,7 @@ func (q *qpay) authQPayV2() (authRes qpayLoginResponse, err error) {
 		return authRes, fmt.Errorf("%s-QPay auth response: %s", time.Now().Format(utils.TimeFormatYYYYMMDDHHMMSS), res.Status)
 	}
 
-	body, _ := ioutil.ReadAll(res.Body)
+	body, _ := io.ReadAll(res.Body)
 	json.Unmarshal(body, &authRes)
 
 	defer res.Body.Close()
@@ -149,7 +149,7 @@ func (q *qpay) refreshToken() (authRes qpayLoginResponse, err error) {
 		return authRes, errors.New(time.Now().Format(utils.TimeFormatYYYYMMDDHHMMSS) + "-QPay token refresh response: " + res.Status)
 	}
 
-	body, _ := ioutil.ReadAll(res.Body)
+	body, _ := io.ReadAll(res.Body)
 	json.Unmarshal(body, &authRes)
 
 	defer res.Body.Close()

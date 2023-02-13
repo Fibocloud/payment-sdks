@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"net/http"
 
 	"github.com/Fibocloud/payment-sdks/utils"
@@ -159,7 +159,7 @@ func sendRequestKhaanEndpoint(endpoint string, api utils.API, body interface{}) 
 	if err != nil {
 		return nil, err
 	}
-	response, err = ioutil.ReadAll(res.Body)
+	response, err = io.ReadAll(res.Body)
 	if err != nil {
 		return nil, err
 	}

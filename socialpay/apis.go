@@ -6,7 +6,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"net/http"
 
 	"github.com/Fibocloud/payment-sdks/utils"
@@ -66,7 +66,7 @@ func httpRequestSocialpay(body interface{}, api utils.API, endpoint string) (res
 		fmt.Printf("err here")
 		return
 	}
-	response, _ = ioutil.ReadAll(res.Body)
+	response, _ = io.ReadAll(res.Body)
 	defer res.Body.Close()
 
 	return

@@ -5,7 +5,7 @@ import (
 	"crypto/tls"
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"net/http"
 
 	"github.com/Fibocloud/payment-sdks/utils"
@@ -148,7 +148,7 @@ func (g golomt) httpRequestGolomtEcommerce(body interface{}, api utils.API, endp
 	req.Header.Add("Authorization", "Bearer "+g.bearerToken)
 
 	res, err := http.DefaultClient.Do(req)
-	response, err = ioutil.ReadAll(res.Body)
+	response, err = io.ReadAll(res.Body)
 	defer res.Body.Close()
 	if res.StatusCode != http.StatusOK {
 		var error Error

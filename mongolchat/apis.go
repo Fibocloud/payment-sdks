@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"net/http"
 
 	"github.com/Fibocloud/payment-sdks/utils"
@@ -47,7 +47,7 @@ func (u *mongolchat) httpRequestMongolChat(body interface{}, api utils.API) (res
 	req.Header.Add("Authorization", "WorkerKey "+u.workerkey)
 
 	res, err := http.DefaultClient.Do(req)
-	response, _ = ioutil.ReadAll(res.Body)
+	response, _ = io.ReadAll(res.Body)
 	if res.StatusCode != 200 {
 		err = errors.New(string(response))
 		fmt.Printf("err here")
