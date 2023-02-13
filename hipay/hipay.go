@@ -12,6 +12,11 @@ type hipay struct {
 }
 
 type Hipay interface {
+	Checkout(request HipayCheckoutRequest) (HipayCheckoutResponse, error)
+	CheckoutGet(checkoutId string) (HipayCheckoutGetResponse, error)
+	PaymentGet(paymentId string) (HipayPaymentGetResponse, error)
+	PaymentCorrection(paymentId string) (HipayPaymentCorrectionResponse, error)
+	Statement(date string) (HipayStatementResponse, error)
 }
 
 func New(endpoint, token, entityId string) Hipay {
