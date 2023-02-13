@@ -12,7 +12,7 @@ type hipay struct {
 }
 
 type Hipay interface {
-	Checkout(request HipayCheckoutRequest) (HipayCheckoutResponse, error)
+	Checkout(amount float64) (HipayCheckoutResponse, error)
 	CheckoutGet(checkoutId string) (HipayCheckoutGetResponse, error)
 	PaymentGet(paymentId string) (HipayPaymentGetResponse, error)
 	PaymentCorrection(paymentId string) (HipayPaymentCorrectionResponse, error)
@@ -27,7 +27,14 @@ func New(endpoint, token, entityId string) Hipay {
 	}
 }
 
-func (h *hipay) Checkout(request HipayCheckoutRequest) (HipayCheckoutResponse, error) {
+func (h *hipay) Checkout(amount float64) (HipayCheckoutResponse, error) {
+	request := HipayCheckoutRequest{
+		EntityID: h.entityId,
+		Amount:   amount,
+		Currency: "MNT",
+		QrData:   true,
+		Signal:   false,
+	}
 	res, err := h.httpRequestHipay(request, HipayCheckout, "")
 	if err != nil {
 		return HipayCheckoutResponse{}, err
