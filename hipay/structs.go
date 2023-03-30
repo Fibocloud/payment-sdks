@@ -39,9 +39,9 @@ type (
 	HipayCheckoutGetResponse struct {
 		Code           int64      `json:"code"`
 		Description    string     `json:"description"`
-		Amount         string     `json:"amount,omitempty"`
+		Amount         float64    `json:"amount,omitempty"`
 		Currency       string     `json:"currency,omitempty"`
-		DiscountAmount string     `json:"discount_amount,omitempty"`
+		DiscountAmount float64    `json:"discount_amount,omitempty"`
 		Status         string     `json:"status,omitempty"`
 		StatusDate     string     `json:"status_date,omitempty"`
 		PaymentID      string     `json:"paymentId,omitempty"`
