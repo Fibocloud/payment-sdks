@@ -13,7 +13,7 @@ type (
 	MonpayQrResponse struct {
 		Code   int            `json:"code"`
 		Info   string         `json:"info"`
-		Result MonpayResultQr `json:"-"`
+		Result MonpayResultQr `json:"result"`
 	}
 	MonpayResultQr struct {
 		Qrcode string `json:"qrcode"`
@@ -23,7 +23,7 @@ type (
 	MonpayCheckResponse struct {
 		Code   int               `json:"code"`
 		Info   string            `json:"info"`
-		Result MonpayResultCheck `json:"-"`
+		Result MonpayResultCheck `json:"result"`
 	}
 	MonpayResultCheck struct {
 		UUID      string `json:"uuid"`

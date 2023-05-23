@@ -16,8 +16,9 @@ type monpay struct {
 }
 
 type Monpay interface {
-	// GenerateQR(input MchatOnlineQrGenerateRequest) (MchatOnlineQrGenerateResponse, error)
-	// CheckQR(qr string) (MchatOnlineQrCheckResponse, error)
+	GenerateQr(input MonpayQrInput) (MonpayQrResponse, error)
+	CheckQr(uuid string) (MonpayCheckResponse, error)
+	CallbackParser(url *url.URL) MonpayCallback
 }
 
 func New(endpoint, username, accountId, callback string) Monpay {
