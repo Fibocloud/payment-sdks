@@ -54,7 +54,7 @@ func (m monpay) CheckQr(uuid string) (response MonpayCheckResponse, err error) {
 
 var decoder = schema.NewDecoder()
 
-func CallbackParser(url *url.URL) (response MonpayCallback) {
+func (m monpay) CallbackParser(url *url.URL) (response MonpayCallback) {
 	err := decoder.Decode(&response, url.Query())
 	if err != nil {
 		log.Println("Error in GET parameters : ", err)
