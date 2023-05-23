@@ -20,11 +20,12 @@ type Monpay interface {
 	// CheckQR(qr string) (MchatOnlineQrCheckResponse, error)
 }
 
-func New(endpoint, username, accountId string) Monpay {
+func New(endpoint, username, accountId, callback string) Monpay {
 	return monpay{
-		endpoint:  endpoint,
-		username:  username,
-		accoutnId: accountId,
+		endpoint:    endpoint,
+		username:    username,
+		accoutnId:   accountId,
+		callbackurl: callback,
 	}
 }
 
