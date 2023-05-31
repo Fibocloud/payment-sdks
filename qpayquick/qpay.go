@@ -9,8 +9,6 @@ type qpayquick struct {
 	password    string
 	username    string
 	callback    string
-	invoiceCode string
-	merchantId  string
 	terminalID  string
 	loginObject *qpayLoginResponse
 }
@@ -25,14 +23,13 @@ type QPayQuick interface {
 	CheckPayment(invoiceID string) (QpayPaymentCheckResponse, error)
 }
 
-func New(username, password, endpoint, callback, invoiceCode, merchantId string) QPayQuick {
+func New(username, password, endpoint, callback, invoiceCode, terminalID string) QPayQuick {
 	return &qpayquick{
 		endpoint:    endpoint,
 		password:    password,
 		username:    username,
 		callback:    callback,
-		invoiceCode: invoiceCode,
-		merchantId:  merchantId,
+		terminalID:  terminalID,
 		loginObject: nil,
 	}
 }
