@@ -174,9 +174,36 @@ type (
 		InvoiceID string `json:"invoice_id"`
 	}
 	QpayPaymentCheckResponse struct {
-		ID                string `json:"id"`
-		InvoiceStatus     string `json:"invoice_status"`
-		InvoiceStatusDate string `json:"invoice_status_date"`
+		ID                string        `json:"id"`
+		InvoiceStatus     string        `json:"invoice_status"`
+		InvoiceStatusDate string        `json:"invoice_status_date"`
+		Payments          []QpayPayment `json:"payments"`
+	}
+
+	QpayPayment struct {
+		ID                 string             `json:"id"`
+		TerminalID         string             `json:"terminal_id"`
+		WalletCustomerID   string             `json:"wallet_customer_id"`
+		Amount             string             `json:"amount"`
+		Currency           string             `json:"currency"`
+		PaymentName        string             `json:"payment_name"`
+		PaymentDescription string             `json:"payment_description"`
+		PaidBy             string             `json:"paid_by"`
+		Note               string             `json:"note"`
+		PaymentStatus      string             `json:"payment_status"`
+		PaymentStatusDate  string             `json:"payment_status_date"`
+		Transactions       []QpayTransactions `json:"transactions"`
+	}
+	QpayTransactions struct {
+		ID                  string `json:"id"`
+		Description         string `json:"description"`
+		TransactionBankCode string `json:"transaction_bank_code"`
+		AccountBankCode     string `json:"account_bank_code"`
+		AccountBankName     string `json:"account_bank_name"`
+		AccountNumber       string `json:"account_number"`
+		Status              string `json:"status"`
+		Amount              string `json:"amount"`
+		Currency            string `json:"currency"`
 	}
 
 	QpayOffset struct {
