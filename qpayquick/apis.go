@@ -95,13 +95,10 @@ func (q *qpayquick) httpRequestQPay(body interface{}, api utils.API, urlExt stri
 // AuthQPayV2 [Login to qpay]
 func (q *qpayquick) authQPayV2() (authRes qpayLoginResponse, err error) {
 	if q.loginObject != nil {
+		expireInA := time.Unix(int64(q.loginObject.ExpiresIn), 0)
+		expireInB := expireInA.Add(time.Duration(-12) * time.Hour)
 		now := time.Now()
-		if q.loginObject.ExpiresIn < int(now.Unix()) {
-			authRes, err = q.refreshToken()
-			if err == nil {
-				return
-			}
-		} else {
+		if now.Before(expireInB) {
 			authRes = *q.loginObject
 			err = nil
 			return

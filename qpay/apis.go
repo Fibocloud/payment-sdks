@@ -107,6 +107,16 @@ func (q *qpay) httpRequestQPay(body interface{}, api utils.API, urlExt string) (
 
 // AuthQPayV2 [Login to qpay]
 func (q *qpay) authQPayV2() (authRes qpayLoginResponse, err error) {
+	if q.loginObject != nil {
+		expireInA := time.Unix(int64(q.loginObject.ExpiresIn), 0)
+		expireInB := expireInA.Add(time.Duration(-12) * time.Hour)
+		now := time.Now()
+		if now.Before(expireInB) {
+			authRes = *q.loginObject
+			err = nil
+			return
+		}
+	}
 	url := q.endpoint + QPayAuthToken.Url
 	req, err := http.NewRequest(QPayAuthToken.Method, url, nil)
 	if err != nil {
