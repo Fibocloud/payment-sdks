@@ -24,14 +24,25 @@ type (
 
 	// Tokipay Payment Response
 	TokipayPaymentResponse struct {
-		StatusCode int                        `json:"statusCode"`
-		Error      string                     `json:"error"`
-		Message    string                     `json:"message"`
-		Data       TokipayPaymentDataResponse `json:"data"`
-		Type       string                     `json:"type"`
+		StatusCode int                           `json:"statusCode"`
+		Error      string                        `json:"error"`
+		Message    string                        `json:"message"`
+		Data       TokipayPaymentRequestResponse `json:"data"`
+		Type       string                        `json:"type"`
 	}
-	TokipayPaymentDataResponse struct {
+	TokipayPaymentRequestResponse struct {
 		RequestId string `json:"requestId"`
+	}
+
+	TokipayPaymentStatusReponse struct {
+		StatusCode int                              `json:"statusCode"`
+		Error      string                           `json:"error"`
+		Message    string                           `json:"message"`
+		Data       TokipayPaymentStatusDataResponse `json:"data"`
+		Type       string                           `json:"type"`
+	}
+	TokipayPaymentStatusDataResponse struct {
+		Status string `json:"status"`
 	}
 
 	TokipayPaymentResponseExt struct {

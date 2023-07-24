@@ -16,7 +16,7 @@ type Tokipay interface {
 	PaymentQr(input TokipayPaymentQrInput) (TokipayPaymentResponse, error)
 	PaymentSentUser(input TokipayPaymentQrInput) (TokipayPaymentResponse, error)
 	PaymentScanUser(input TokipayPaymentQrInput) (TokipayPaymentResponse, error)
-	PaymentStatus(requestId string) (TokipayPaymentResponseExt, error)
+	PaymentStatus(requestId string) (TokipayPaymentStatusReponse, error)
 	PaymentCancel(requestId string) (TokipayPaymentResponseExt, error)
 }
 
@@ -45,10 +45,8 @@ func (q *tokipay) PaymentQr(input TokipayPaymentQrInput) (TokipayPaymentResponse
 	if err != nil {
 		return TokipayPaymentResponse{}, err
 	}
-
 	var response TokipayPaymentResponse
 	json.Unmarshal(res, &response)
-
 	return response, nil
 }
 
@@ -99,14 +97,14 @@ func (q *tokipay) PaymentScanUser(input TokipayPaymentQrInput) (TokipayPaymentRe
 	return response, nil
 }
 
-func (q *tokipay) PaymentStatus(requestId string) (TokipayPaymentResponseExt, error) {
+func (q *tokipay) PaymentStatus(requestId string) (TokipayPaymentStatusReponse, error) {
 
 	res, err := q.httpRequestTokipay(nil, TokipayPaymentStatus, requestId)
 	if err != nil {
-		return TokipayPaymentResponseExt{}, err
+		return TokipayPaymentStatusReponse{}, err
 	}
 
-	var response TokipayPaymentResponseExt
+	var response TokipayPaymentStatusReponse
 	json.Unmarshal(res, &response)
 
 	return response, nil
