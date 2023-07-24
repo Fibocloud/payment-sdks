@@ -34,7 +34,7 @@ type (
 		RequestId string `json:"requestId"`
 	}
 
-	TokipayPaymentStatusReponse struct {
+	TokipayPaymentStatusResponse struct {
 		StatusCode int                              `json:"statusCode"`
 		Error      string                           `json:"error"`
 		Message    string                           `json:"message"`
