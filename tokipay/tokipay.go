@@ -16,6 +16,8 @@ type Tokipay interface {
 	PaymentQr(input TokipayPaymentQrInput) (TokipayPaymentResponse, error)
 	PaymentSentUser(input TokipayPaymentQrInput) (TokipayPaymentResponse, error)
 	PaymentScanUser(input TokipayPaymentQrInput) (TokipayPaymentResponse, error)
+	PaymentStatus(requestId string) (TokipayPaymentResponseExt, error)
+	PaymentCancel(requestId string) (TokipayPaymentResponseExt, error)
 }
 
 func New(endpoint, apiKey, imApiKey, authorization, merchantId string) Tokipay {
