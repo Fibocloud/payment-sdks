@@ -18,7 +18,7 @@ type Tokipay interface {
 	PaymentScanUser(input TokipayPaymentQrInput) (TokipayPaymentResponse, error)
 }
 
-func New(endpoint, apiKey, imApiKey, authorization, merchantId, successUrl, failureUrl string) Tokipay {
+func New(endpoint, apiKey, imApiKey, authorization, merchantId string) Tokipay {
 	return &tokipay{
 		endpoint:      endpoint,
 		apiKey:        apiKey,
@@ -30,6 +30,8 @@ func New(endpoint, apiKey, imApiKey, authorization, merchantId, successUrl, fail
 
 func (q *tokipay) PaymentQr(input TokipayPaymentQrInput) (TokipayPaymentResponse, error) {
 	request := TokipayPaymentQrRequest{
+		SuccessUrl:    "www.mtm.mn",
+		FailureUrl:    "www.mtm.mn",
 		OrderId:       input.OrderId,
 		MerchantId:    q.merchantId,
 		Amount:        input.Amount,
@@ -50,6 +52,8 @@ func (q *tokipay) PaymentQr(input TokipayPaymentQrInput) (TokipayPaymentResponse
 
 func (q *tokipay) PaymentSentUser(input TokipayPaymentQrInput) (TokipayPaymentResponse, error) {
 	request := TokipayPaymentSentUserRequest{
+		SuccessUrl:    "www.mtm.mn",
+		FailureUrl:    "www.mtm.mn",
 		OrderId:       input.OrderId,
 		MerchantId:    q.merchantId,
 		Amount:        input.Amount,
@@ -72,6 +76,8 @@ func (q *tokipay) PaymentSentUser(input TokipayPaymentQrInput) (TokipayPaymentRe
 
 func (q *tokipay) PaymentScanUser(input TokipayPaymentQrInput) (TokipayPaymentResponse, error) {
 	request := TokipayPaymentScanUserRequest{
+		SuccessUrl:    "www.mtm.mn",
+		FailureUrl:    "www.mtm.mn",
 		OrderId:       input.OrderId,
 		MerchantId:    q.merchantId,
 		Amount:        input.Amount,
