@@ -2,6 +2,7 @@ package tokipay
 
 import (
 	"encoding/json"
+	"errors"
 )
 
 type tokipay struct {
@@ -47,6 +48,9 @@ func (q *tokipay) PaymentQr(input TokipayPaymentQrInput) (TokipayPaymentResponse
 	}
 	var response TokipayPaymentResponse
 	json.Unmarshal(res, &response)
+	if response.StatusCode != 200 {
+		return TokipayPaymentResponse{}, errors.New(response.Error + ":" + response.Message)
+	}
 	return response, nil
 }
 
@@ -70,7 +74,9 @@ func (q *tokipay) PaymentSentUser(input TokipayPaymentQrInput) (TokipayPaymentRe
 
 	var response TokipayPaymentResponse
 	json.Unmarshal(res, &response)
-
+	if response.StatusCode != 200 {
+		return TokipayPaymentResponse{}, errors.New(response.Error + ":" + response.Message)
+	}
 	return response, nil
 }
 
@@ -94,6 +100,9 @@ func (q *tokipay) PaymentScanUser(input TokipayPaymentQrInput) (TokipayPaymentRe
 	var response TokipayPaymentResponse
 	json.Unmarshal(res, &response)
 
+	if response.StatusCode != 200 {
+		return TokipayPaymentResponse{}, errors.New(response.Error + ":" + response.Message)
+	}
 	return response, nil
 }
 
@@ -106,7 +115,9 @@ func (q *tokipay) PaymentStatus(requestId string) (TokipayPaymentStatusResponse,
 
 	var response TokipayPaymentStatusResponse
 	json.Unmarshal(res, &response)
-
+	if response.StatusCode != 200 {
+		return TokipayPaymentStatusResponse{}, errors.New(response.Error + ":" + response.Message)
+	}
 	return response, nil
 }
 
@@ -119,7 +130,9 @@ func (q *tokipay) PaymentCancel(requestId string) (TokipayPaymentStatusResponse,
 
 	var response TokipayPaymentStatusResponse
 	json.Unmarshal(res, &response)
-
+	if response.StatusCode != 200 {
+		return TokipayPaymentStatusResponse{}, errors.New(response.Error + ":" + response.Message)
+	}
 	return response, nil
 }
 
