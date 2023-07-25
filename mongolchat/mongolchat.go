@@ -2,6 +2,7 @@ package mongolchat
 
 import (
 	"encoding/json"
+	"errors"
 )
 
 type mongolchat struct {
@@ -32,6 +33,10 @@ func (s mongolchat) GenerateQR(input MchatOnlineQrGenerateRequest) (response Mch
 		return
 	}
 	json.Unmarshal(res, &response)
+	if response.Code != 1000 {
+		err = errors.New(response.Message)
+	}
+
 	return
 }
 
@@ -43,5 +48,8 @@ func (s mongolchat) CheckQR(qr string) (response MchatOnlineQrCheckResponse, err
 		return
 	}
 	json.Unmarshal(res, &response)
+	if response.Code != 1000 {
+		err = errors.New(response.Message)
+	}
 	return
 }

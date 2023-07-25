@@ -2,6 +2,7 @@ package hipay
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 )
 
@@ -45,6 +46,9 @@ func (h *hipay) Checkout(amount float64) (HipayCheckoutResponse, error) {
 		fmt.Println(err.Error())
 		return HipayCheckoutResponse{}, err
 	}
+	if response.Code != 1 {
+		return HipayCheckoutResponse{}, errors.New(response.Description + ": " + response.Details[0].Field + " - " + response.Details[0].Issue)
+	}
 	return response, nil
 }
 
@@ -58,6 +62,9 @@ func (h *hipay) CheckoutGet(checkoutId string) (HipayCheckoutGetResponse, error)
 	if err := json.Unmarshal(res, &response); err != nil {
 		return HipayCheckoutGetResponse{}, err
 	}
+	if response.Code != 1 {
+		return HipayCheckoutGetResponse{}, errors.New(response.Description + ": " + response.Details[0].Field + " - " + response.Details[0].Issue)
+	}
 	return response, nil
 }
 
@@ -70,6 +77,9 @@ func (h *hipay) PaymentGet(paymentId string) (HipayPaymentGetResponse, error) {
 	var response HipayPaymentGetResponse
 	if err := json.Unmarshal(res, &response); err != nil {
 		return HipayPaymentGetResponse{}, err
+	}
+	if response.Code != 1 {
+		return HipayPaymentGetResponse{}, errors.New(response.Description + ": " + response.Details[0].Field + " - " + response.Details[0].Issue)
 	}
 	return response, nil
 }
@@ -87,6 +97,9 @@ func (h *hipay) PaymentCorrection(paymentId string) (HipayPaymentCorrectionRespo
 	if err := json.Unmarshal(res, &response); err != nil {
 		return HipayPaymentCorrectionResponse{}, err
 	}
+	if response.Code != 1 {
+		return HipayPaymentCorrectionResponse{}, errors.New(response.Description + ": " + response.Details[0].Field + " - " + response.Details[0].Issue)
+	}
 	return response, nil
 }
 
@@ -102,6 +115,9 @@ func (h *hipay) Statement(date string) (HipayStatementResponse, error) {
 	var response HipayStatementResponse
 	if err := json.Unmarshal(res, &response); err != nil {
 		return HipayStatementResponse{}, err
+	}
+	if response.Code != 1 {
+		return HipayStatementResponse{}, errors.New(response.Description + ": " + response.Details[0].Field + " - " + response.Details[0].Issue)
 	}
 	return response, nil
 }

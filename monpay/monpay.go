@@ -2,6 +2,7 @@ package monpay
 
 import (
 	"encoding/json"
+	"errors"
 	"log"
 	"net/url"
 
@@ -41,6 +42,18 @@ func (m monpay) GenerateQr(input MonpayQrInput) (response MonpayQrResponse, err 
 		return
 	}
 	json.Unmarshal(res, &response)
+	if response.Code != 0 {
+		switch response.Code {
+		case 5:
+			err = errors.New("хүсэлт буруу")
+		case 1:
+			err = errors.New("unauthorized")
+		case 999:
+			err = errors.New("дотоод алдаа")
+		default:
+			err = errors.New("unknown error")
+		}
+	}
 	return
 }
 
@@ -50,6 +63,20 @@ func (m monpay) CheckQr(uuid string) (response MonpayCheckResponse, err error) {
 		return
 	}
 	json.Unmarshal(res, &response)
+	if response.Code != 0 {
+		switch response.Code {
+		case 5:
+			err = errors.New("хүсэлт буруу")
+		case 23:
+			err = errors.New("QR not scanned")
+		case 1:
+			err = errors.New("unauthorized")
+		case 999:
+			err = errors.New("дотоод алдаа")
+		default:
+			err = errors.New("unknown error")
+		}
+	}
 	return
 }
 
