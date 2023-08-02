@@ -42,20 +42,20 @@ type (
 	}
 
 	QPaySimpleInvoiceResponse struct {
-		InvoiceID    string      `json:"invoice_id"`    // Object id
-		QpayShortUrl string      `json:"qPay_shortUrl"` // qr shortcut
-		QrText       string      `json:"qr_text"`       // Данс болон картын гүйлгээ дэмжих QR утга
-		QrImage      string      `json:"qr_image"`      // Base64  зурган QR код, Qpay лого голдоо агуулсан
-		Urls         []*Deeplink `json:"urls"`
+		Name         string     `json:"name"`
+		Message      string     `json:"message"`
+		PaymentID    int        `json:"payment_id"`
+		QPayQrcode   string     `json:"qPay_QRcode"`
+		QPayQrimage  string     `json:"qPay_QRimage"`
+		CustomerID   string     `json:"customer_id"`
+		QPayURL      string     `json:"qPay_url"`
+		QPayDeeplink []Deeplink `json:"qPay_deeplink"`
 	}
 
 	Deeplink struct {
-		Name        string `json:"name"`        // Банкны нэр
-		Description string `json:"description"` // Утга
-		Logo        string `json:"logo"`        // Лого
-		Link        string `json:"link"`        // Холбоос линк
+		Name string `json:"name"`
+		Link string `json:"link"`
 	}
-
 	QpayInvoiceGetResponse struct {
 		AllowExceed        bool               `json:"allow_exceed"`
 		AllowPartial       bool               `json:"allow_partial"`
