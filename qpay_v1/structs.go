@@ -37,7 +37,7 @@ type (
 		RegisterNo  string `json:"register_no"`
 		Name        string `json:"name"`
 		Email       string `json:"email"`
-		PhoneNumber string `json:"phone_number"`
+		PhoneNumber *int   `json:"phone_number"`
 		Note        string `json:"note"`
 	}
 
