@@ -25,7 +25,7 @@ type QPay interface {
 	CheckPayment(paymentID string) (QpayPaymentCheckResponse, error)
 }
 
-func New(client_id, client_secret, endpoint, callback, invoiceCode, merchantId, templateId, branchId, posId string) QPay {
+func New(client_id, client_secret, endpoint, callback, merchantId, templateId, branchId, posId string) QPay {
 	return &qpay{
 		endpoint:      endpoint,
 		client_id:     client_id,
@@ -33,7 +33,6 @@ func New(client_id, client_secret, endpoint, callback, invoiceCode, merchantId, 
 		grant_type:    "client",
 		refresh_token: "",
 		callback:      callback,
-		invoiceCode:   invoiceCode,
 		merchantId:    merchantId,
 		templateId:    templateId,
 		branchId:      branchId,
