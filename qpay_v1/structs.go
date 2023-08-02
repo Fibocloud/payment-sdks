@@ -26,7 +26,7 @@ type (
 		BillNo      string              `json:"bill_no"`
 		Date        string              `json:"date"`
 		Description string              `json:"description"`
-		Amount      string              `json:"amount"`
+		Amount      float64             `json:"amount"`
 		BtukCode    string              `json:"btuk_code"`
 		VatFlag     string              `json:"vat_flag"`
 		Receiver    QPayInvoiceReceiver `json:"receiver"`

@@ -11,7 +11,6 @@ type qpay struct {
 	grant_type    string
 	refresh_token string
 	callback      string
-	invoiceCode   string
 	merchantId    string
 	templateId    string
 	branchId      string
