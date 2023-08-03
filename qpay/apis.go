@@ -26,7 +26,7 @@ var (
 		Method: http.MethodGet,
 	}
 	QPayPaymentCheck = utils.API{
-		Url:    "/payment/check/",
+		Url:    "/payment/check",
 		Method: http.MethodPost,
 	}
 	QPayPaymentCancel = utils.API{
