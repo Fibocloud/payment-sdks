@@ -26,8 +26,18 @@ type (
 		Result MonpayResultCheck `json:"result"`
 	}
 	MonpayResultCheck struct {
-		UUID      string `json:"uuid"`
-		UserVatId string `json:"userVatId"`
+		UUID          string `json:"uuid"`
+		UsedAt        int64  `json:"usedAt"`
+		UsedByUd      int64  `json:"usedById"`
+		TransactionId string `json:"transactionId"`
+		Amount        int64  `json:"amount"`
+		CreatedAt     int64  `json:"createdAt"`
+		UserPhone     string `json:"userPhone"`
+		UserAccountNo string `json:"userAccountNo"`
+		UserVatId     string `json:"userVatId"`
+		UsedAtUI      string `json:"usedAtUI"`
+		CreatedAtUI   string `json:"createdAtUI"`
+		AmountUI      string `json:"amountUI"`
 	}
 
 	MonpayCallback struct {
