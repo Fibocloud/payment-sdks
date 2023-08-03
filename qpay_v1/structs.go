@@ -18,38 +18,44 @@ type (
 		SessionState     string `json:"session_state"`
 	}
 
-	QPayCreateInvoiceInput struct {
-		SenderCode    string
-		ReceiverCode  string
-		Description   string
-		Amount        int64
-		CallbackParam map[string]string
+	QPayInvoiceCreateRequest struct {
+		TemplateID  string              `json:"template_id"`
+		MerchantID  string              `json:"merchant_id"`
+		BranchID    string              `json:"branch_id"`
+		PosID       string              `json:"pos_id"`
+		BillNo      string              `json:"bill_no"`
+		Date        string              `json:"date"`
+		Description string              `json:"description"`
+		Amount      float64             `json:"amount"`
+		BtukCode    string              `json:"btuk_code"`
+		VatFlag     string              `json:"vat_flag"`
+		Receiver    QPayInvoiceReceiver `json:"receiver"`
 	}
 
-	QPaySimpleInvoiceRequest struct {
-		InvoiceCode         string `json:"invoice_code"`          // qpay-ээс өгсөн нэхэмжлэхийн код
-		SenderInvoiceCode   string `json:"sender_invoice_no"`     // Байгууллагаас үүсгэх давтагдашгүй нэхэмжлэлийн дугаар
-		InvoiceReceiverCode string `json:"invoice_receiver_code"` // Байгууллагын нэхэмжлэхийг хүлээн авч буй харилцагчийн дахин давтагдашгүй дугаар
-		InvoiceDescription  string `json:"invoice_description"`   // Нэхэмжлэлийн утга
-		Amount              int64  `json:"amount"`                // Мөнгөн дүн
-		CallbackUrl         string `json:"callback_url"`
+	QPayInvoiceReceiver struct {
+		ID          string `json:"id"`
+		RegisterNo  string `json:"register_no"`
+		Name        string `json:"name"`
+		Email       string `json:"email"`
+		PhoneNumber *int   `json:"phone_number"`
+		Note        string `json:"note"`
 	}
 
 	QPaySimpleInvoiceResponse struct {
-		InvoiceID    string      `json:"invoice_id"`    // Object id
-		QpayShortUrl string      `json:"qPay_shortUrl"` // qr shortcut
-		QrText       string      `json:"qr_text"`       // Данс болон картын гүйлгээ дэмжих QR утга
-		QrImage      string      `json:"qr_image"`      // Base64  зурган QR код, Qpay лого голдоо агуулсан
-		Urls         []*Deeplink `json:"urls"`
+		Name         string     `json:"name"`
+		Message      string     `json:"message"`
+		PaymentID    int        `json:"payment_id"`
+		QPayQrcode   string     `json:"qPay_QRcode"`
+		QPayQrimage  string     `json:"qPay_QRimage"`
+		CustomerID   string     `json:"customer_id"`
+		QPayURL      string     `json:"qPay_url"`
+		QPayDeeplink []Deeplink `json:"qPay_deeplink"`
 	}
 
 	Deeplink struct {
-		Name        string `json:"name"`        // Банкны нэр
-		Description string `json:"description"` // Утга
-		Logo        string `json:"logo"`        // Лого
-		Link        string `json:"link"`        // Холбоос линк
+		Name string `json:"name"`
+		Link string `json:"link"`
 	}
-
 	QpayInvoiceGetResponse struct {
 		AllowExceed        bool               `json:"allow_exceed"`
 		AllowPartial       bool               `json:"allow_partial"`
@@ -78,9 +84,6 @@ type (
 
 	QpayInput struct {
 	}
-	// QpayTransaction V2
-	QpayTransaction struct {
-	}
 	// QLine V2
 	QpayLine struct {
 		Discounts       []interface{} `json:"discounts"`
@@ -105,20 +108,30 @@ type (
 	}
 
 	QpayPaymentCheckResponse struct {
-		Count      int64      `json:"count"`       // Нийт гүйлгээний мөрийн тоо
-		PaidAmount int64      `json:"paid_amount"` // Гүйлгээний дүн
-		Rows       []*QpayRow `json:"rows"`        // Гүйлгээний мөр
+		PaymentInfo struct {
+			PaymentStatus   string            `json:"payment_status"`
+			CustomerID      string            `json:"customer_id"`
+			QrAccountID     string            `json:"-"`
+			ItemID          string            `json:"-"`
+			PaymentAmount   string            `json:"-"`
+			TransactionID   string            `json:"-"`
+			LastPaymentDate string            `json:"-"`
+			Transactions    []QpayTransaction `json:"transactions"`
+		} `json:"payment_info"`
+		Name    string `json:"name"`
+		Message string `json:"message"`
 	}
 
-	QpayRow struct {
-		PaymentID       string      `json:"payment_id"`       // QPay-ээс үүссэн гүйлгээний дугаар
-		PaymentStatus   string      `json:"payment_status"`   // Гүйлгээ төлөв // NEW: Гүйлгээ үүсгэгдсэн // FAILED: Гүйлгээ амжилтгүй // PAID: Төлөгдсөн // REFUNDED: Гүйлгээ буцаагдсан
-		PaymentDate     interface{} `json:"payment_date"`     // Гүйлгээ хийгдсэн хугацаа
-		PaymentFee      string      `json:"payment_fee"`      // Гүйлгээний шимтгэл шимтгэл
-		PaymentAmount   string      `json:"payment_amount"`   // Гүйлгээний дүн
-		PaymentCurrency string      `json:"payment_currency"` // Гүйлгээний валют
-		PaymentWallet   string      `json:"payemnt_wallet"`   // Гүйлгээ хийгдэн воллет
-		TransactionType string      `json:"transaction_type"` // P2P or CARD
+	QpayTransaction struct {
+		TransactionBankCode      string  `json:"transaction_bank_code"`
+		TransactionNo            int     `json:"transaction_no"`
+		TransactionDate          string  `json:"transaction_date"`
+		TransactionAmount        float32 `json:"transaction_amount"`
+		TransactionCurrencyType  int     `json:"transaction_currency_type"`
+		BeneficiaryBankCode      string  `json:"beneficiary_bank_code"`
+		BeneficiaryBankName      string  `json:"beneficiary_bank_name"`
+		BeneficiaryAccountName   string  `json:"beneficiary_account_name"`
+		BeneficiaryAccountNumber string  `json:"beneficiary_account_number"`
 	}
 
 	QpayPaymentCancelRequest struct {

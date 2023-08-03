@@ -26,32 +26,17 @@ var (
 		Method: http.MethodGet,
 	}
 	QPayPaymentCheck = utils.API{
-		Url:    "/payment/check",
-		Method: http.MethodPost,
+		Url:    "/payment/check/",
+		Method: http.MethodGet,
 	}
-	QPayPaymentCancel = utils.API{
-		Url:    "/payment/cancel",
-		Method: http.MethodDelete,
-	}
-	QPayPaymentRefund = utils.API{
-		Url:    "/payment/refund/",
-		Method: http.MethodDelete,
-	}
-	QPayPaymentList = utils.API{
-		Url:    "/payment/url",
-		Method: http.MethodPost,
-	}
+
 	QPayInvoiceCreate = utils.API{
-		Url:    "/invoice",
+		Url:    "/bill/create",
 		Method: http.MethodPost,
 	}
 	QPayInvoiceGet = utils.API{
 		Url:    "/invoice/",
 		Method: http.MethodGet,
-	}
-	QPayInvoiceCancel = utils.API{
-		Url:    "/invoice/",
-		Method: http.MethodDelete,
 	}
 )
 
