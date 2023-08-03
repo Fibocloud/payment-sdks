@@ -84,9 +84,6 @@ type (
 
 	QpayInput struct {
 	}
-	// QpayTransaction V2
-	QpayTransaction struct {
-	}
 	// QLine V2
 	QpayLine struct {
 		Discounts       []interface{} `json:"discounts"`
@@ -111,20 +108,30 @@ type (
 	}
 
 	QpayPaymentCheckResponse struct {
-		Count      int64      `json:"count"`       // Нийт гүйлгээний мөрийн тоо
-		PaidAmount int64      `json:"paid_amount"` // Гүйлгээний дүн
-		Rows       []*QpayRow `json:"rows"`        // Гүйлгээний мөр
+		PaymentInfo struct {
+			PaymentStatus   string            `json:"payment_status"`
+			CustomerID      string            `json:"customer_id"`
+			QrAccountID     string            `json:"-"`
+			ItemID          string            `json:"-"`
+			PaymentAmount   string            `json:"-"`
+			TransactionID   string            `json:"-"`
+			LastPaymentDate string            `json:"-"`
+			Transactions    []QpayTransaction `json:"transactions"`
+		} `json:"payment_info"`
+		Name    string `json:"name"`
+		Message string `json:"message"`
 	}
 
-	QpayRow struct {
-		PaymentID       string      `json:"payment_id"`       // QPay-ээс үүссэн гүйлгээний дугаар
-		PaymentStatus   string      `json:"payment_status"`   // Гүйлгээ төлөв // NEW: Гүйлгээ үүсгэгдсэн // FAILED: Гүйлгээ амжилтгүй // PAID: Төлөгдсөн // REFUNDED: Гүйлгээ буцаагдсан
-		PaymentDate     interface{} `json:"payment_date"`     // Гүйлгээ хийгдсэн хугацаа
-		PaymentFee      string      `json:"payment_fee"`      // Гүйлгээний шимтгэл шимтгэл
-		PaymentAmount   string      `json:"payment_amount"`   // Гүйлгээний дүн
-		PaymentCurrency string      `json:"payment_currency"` // Гүйлгээний валют
-		PaymentWallet   string      `json:"payemnt_wallet"`   // Гүйлгээ хийгдэн воллет
-		TransactionType string      `json:"transaction_type"` // P2P or CARD
+	QpayTransaction struct {
+		TransactionBankCode      string  `json:"transaction_bank_code"`
+		TransactionNo            int     `json:"transaction_no"`
+		TransactionDate          string  `json:"transaction_date"`
+		TransactionAmount        float32 `json:"transaction_amount"`
+		TransactionCurrencyType  int     `json:"transaction_currency_type"`
+		BeneficiaryBankCode      string  `json:"beneficiary_bank_code"`
+		BeneficiaryBankName      string  `json:"beneficiary_bank_name"`
+		BeneficiaryAccountName   string  `json:"beneficiary_account_name"`
+		BeneficiaryAccountNumber string  `json:"beneficiary_account_number"`
 	}
 
 	QpayPaymentCancelRequest struct {
