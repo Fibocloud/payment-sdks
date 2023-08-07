@@ -17,7 +17,11 @@ type storepay struct {
 	loginObject *storepayLoginResponse
 }
 
-type Storepay interface{}
+type Storepay interface {
+	LoanCheck(id string) (bool, error)
+	Loan(input StorepayLoanInput) (string, error)
+	UserPossibleAmount(mobileNumber string) (float64, error)
+}
 
 func New(appUsername, appPassword, username, password, endpoint, storeId, callbackUrl string) Storepay {
 	return &storepay{
