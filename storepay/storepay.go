@@ -23,6 +23,7 @@ type Storepay interface {
 	LoanCheck(id string) (bool, error)
 	Loan(input StorepayLoanInput) (int64, error)
 	UserPossibleAmount(mobileNumber string) (float64, error)
+	Close()
 }
 
 func New(appUsername, appPassword, username, password, authUrl, baseUrl, storeId, callbackUrl string) Storepay {
@@ -93,4 +94,9 @@ func (s *storepay) UserPossibleAmount(mobileNumber string) (float64, error) {
 		return 0, errors.New(response.Status + ": " + response.MsgList[0].Code + " - " + response.MsgList[0].Text)
 	}
 	return response.Value, nil
+}
+
+func (s *storepay) Close() {
+	s.ExpireIn = nil
+	s.loginObject = nil
 }
