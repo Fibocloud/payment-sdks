@@ -14,6 +14,7 @@ type storepay struct {
 	endpoint    string
 	storeId     string
 	callbackUrl string
+	ExpireIn    *int64
 	loginObject *storepayLoginResponse
 }
 
@@ -32,6 +33,7 @@ func New(appUsername, appPassword, username, password, endpoint, storeId, callba
 		endpoint:    endpoint,
 		storeId:     storeId,
 		callbackUrl: callbackUrl,
+		ExpireIn:    nil,
 		loginObject: nil,
 	}
 }

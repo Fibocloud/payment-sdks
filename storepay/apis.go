@@ -66,9 +66,8 @@ func (s *storepay) httpRequest(body interface{}, api utils.API, urlExt string) (
 // AuthStorepay [Login to storepay]
 func (s *storepay) authStorepay() (authRes storepayLoginResponse, err error) {
 	if s.loginObject != nil {
-		expireD := time.Now().Unix() + int64(s.loginObject.ExpiresIn)
 		now := time.Now().Unix()
-		if now < expireD {
+		if now < *s.ExpireIn {
 			authRes = *s.loginObject
 			err = nil
 			return
@@ -94,5 +93,6 @@ func (s *storepay) authStorepay() (authRes storepayLoginResponse, err error) {
 	json.Unmarshal(body, &authRes)
 
 	defer res.Body.Close()
+	*s.ExpireIn = time.Now().Unix() + int64(authRes.ExpiresIn)
 	return authRes, nil
 }
