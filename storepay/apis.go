@@ -93,6 +93,7 @@ func (s *storepay) authStorepay() (authRes storepayLoginResponse, err error) {
 	json.Unmarshal(body, &authRes)
 
 	defer res.Body.Close()
-	*s.ExpireIn = time.Now().Unix() + int64(authRes.ExpiresIn)
+	expireD := time.Now().Unix() + int64(authRes.ExpiresIn)
+	s.ExpireIn = &expireD
 	return authRes, nil
 }
