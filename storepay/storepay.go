@@ -21,7 +21,7 @@ type storepay struct {
 
 type Storepay interface {
 	LoanCheck(id string) (bool, error)
-	Loan(input StorepayLoanInput) (string, error)
+	Loan(input StorepayLoanInput) (int64, error)
 	UserPossibleAmount(mobileNumber string) (float64, error)
 }
 
@@ -40,7 +40,7 @@ func New(appUsername, appPassword, username, password, authUrl, baseUrl, storeId
 	}
 }
 
-func (s *storepay) Loan(input StorepayLoanInput) (string, error) {
+func (s *storepay) Loan(input StorepayLoanInput) (int64, error) {
 
 	request := StorepayLoanRequest{
 		StoreId:      s.storeId,
@@ -52,13 +52,13 @@ func (s *storepay) Loan(input StorepayLoanInput) (string, error) {
 
 	res, err := s.httpRequest(request, StorepayLoan, "")
 	if err != nil {
-		return "", err
+		return 0, err
 	}
 
 	var response StorepayLoanResponse
 	json.Unmarshal(res, &response)
 	if response.Status != "Success" {
-		return "", errors.New(response.Status + " - " + response.MsgList[0].Code)
+		return 0, errors.New(response.Status + ": " + response.MsgList[0].Code + " - " + response.MsgList[0].Text)
 	}
 	return response.Value, nil
 }
@@ -71,7 +71,7 @@ func (s *storepay) LoanCheck(id string) (bool, error) {
 	var response StorepayCheckResponse
 	json.Unmarshal(res, &response)
 	if response.Status != "Success" {
-		return false, errors.New(response.Status + " - " + response.MsgList[0].Code)
+		return false, errors.New(response.Status + ": " + response.MsgList[0].Code + " - " + response.MsgList[0].Text)
 	}
 	return response.Value, nil
 
@@ -90,7 +90,7 @@ func (s *storepay) UserPossibleAmount(mobileNumber string) (float64, error) {
 	var response StorepayUserCheckResponse
 	json.Unmarshal(res, &response)
 	if response.Status != "Success" {
-		return 0, errors.New(response.Status + " - " + response.MsgList[0].Code)
+		return 0, errors.New(response.Status + ": " + response.MsgList[0].Code + " - " + response.MsgList[0].Text)
 	}
 	return response.Value, nil
 }

@@ -33,7 +33,7 @@ type (
 		CallbackUrl  string `json:"callbackUrl"`
 	}
 	StorepayLoanResponse struct {
-		Value   string      `json:"value"`
+		Value   int64       `json:"value"`
 		MsgList []MsgStruct `json:"msgList"`
 		Attrs   interface{} `json:"attrs"`
 		Status  string      `json:"status"`
