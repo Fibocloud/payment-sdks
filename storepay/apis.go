@@ -49,7 +49,7 @@ func (s *storepay) httpRequest(body interface{}, api utils.API, urlExt string) (
 		requestBody = bytes.NewReader(requestByte)
 	}
 
-	req, _ := http.NewRequest(api.Method, s.endpoint+api.Url+urlExt, requestBody)
+	req, _ := http.NewRequest(api.Method, s.baseUrl+api.Url+urlExt, requestBody)
 	req.Header.Add("Content-Type", utils.HttpContent)
 	req.Header.Add("Authorization", "Bearer "+s.loginObject.AccessToken)
 
@@ -73,7 +73,7 @@ func (s *storepay) authStorepay() (authRes storepayLoginResponse, err error) {
 			return
 		}
 	}
-	url := s.endpoint + StorepayAuth.Url + "?grant_type=password&username=" + s.appUsername + "&password=" + s.appPassword
+	url := s.authUrl + StorepayAuth.Url + "?grant_type=password&username=" + s.appUsername + "&password=" + s.appPassword
 	req, err := http.NewRequest(StorepayAuth.Method, url, nil)
 	if err != nil {
 		fmt.Println(err.Error())

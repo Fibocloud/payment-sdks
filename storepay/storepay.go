@@ -11,7 +11,8 @@ type storepay struct {
 	appPassword string
 	username    string
 	password    string
-	endpoint    string
+	authUrl     string
+	baseUrl     string
 	storeId     string
 	callbackUrl string
 	ExpireIn    *int64
@@ -24,13 +25,14 @@ type Storepay interface {
 	UserPossibleAmount(mobileNumber string) (float64, error)
 }
 
-func New(appUsername, appPassword, username, password, endpoint, storeId, callbackUrl string) Storepay {
+func New(appUsername, appPassword, username, password, authUrl, baseUrl, storeId, callbackUrl string) Storepay {
 	return &storepay{
 		appUsername: appUsername,
 		appPassword: appPassword,
 		username:    username,
 		password:    password,
-		endpoint:    endpoint,
+		authUrl:     authUrl,
+		baseUrl:     baseUrl,
 		storeId:     storeId,
 		callbackUrl: callbackUrl,
 		ExpireIn:    nil,
