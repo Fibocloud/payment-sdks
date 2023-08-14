@@ -13,16 +13,18 @@ type (
 	}
 
 	QPayCreateInvoiceInput struct {
-		SenderCode    string
-		ReceiverCode  string
-		Description   string
-		Amount        int64
-		CallbackParam map[string]string
+		SenderCode     string
+		SenderBranchNo string
+		ReceiverCode   string
+		Description    string
+		Amount         int64
+		CallbackParam  map[string]string
 	}
 
 	QPaySimpleInvoiceRequest struct {
 		InvoiceCode         string `json:"invoice_code"`          // qpay-ээс өгсөн нэхэмжлэхийн код
 		SenderInvoiceCode   string `json:"sender_invoice_no"`     // Байгууллагаас үүсгэх давтагдашгүй нэхэмжлэлийн дугаар
+		SenderBranchNo      string `json:"sender_branch_no"`      // 	Байгууллагын салбарын код
 		InvoiceReceiverCode string `json:"invoice_receiver_code"` // Байгууллагын нэхэмжлэхийг хүлээн авч буй харилцагчийн дахин давтагдашгүй дугаар
 		InvoiceDescription  string `json:"invoice_description"`   // Нэхэмжлэлийн утга
 		Amount              int64  `json:"amount"`                // Мөнгөн дүн
