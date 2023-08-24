@@ -49,7 +49,7 @@ func (q *qpay) CreateInvoice(input QPayCreateInvoiceInput) (QPaySimpleInvoiceRes
 	request := QPaySimpleInvoiceRequest{
 		InvoiceCode:         q.invoiceCode,
 		SenderInvoiceCode:   input.SenderCode,
-		SenderBranchNo:      input.SenderBranchNo,
+		SenderBranchCode:    input.SenderBranchCode,
 		InvoiceReceiverCode: input.ReceiverCode,
 		InvoiceDescription:  input.Description,
 		Amount:              amountInt,
