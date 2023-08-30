@@ -82,12 +82,13 @@ func (g golomt) CreateInvoice(input CreateInvoiceInput) (response CreateInvoiceR
 	))
 
 	request := CreateInvoiceRequest{
-		Amount:        _amount,
-		Checksum:      checksum,
-		GenerateToken: boolToString(input.GetToken),
-		Callback:      input.Callback,
-		TransactionID: input.TransactionID,
-		ReturnType:    string(input.ReturnType),
+		Amount:         _amount,
+		Checksum:       checksum,
+		GenerateToken:  boolToString(input.GetToken),
+		Callback:       input.Callback,
+		TransactionID:  input.TransactionID,
+		ReturnType:     string(input.ReturnType),
+		SocialDeeplink: boolToString(input.SocialDeeplink),
 	}
 
 	fmt.Printf("checksum: %s\n", checksum)
@@ -105,7 +106,6 @@ func (g golomt) CreateInvoice(input CreateInvoiceInput) (response CreateInvoiceR
 		fmt.Println("Unmarshal: ", err)
 		return
 	}
-
 	return
 }
 
