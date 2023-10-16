@@ -59,20 +59,53 @@ type OrderInqueryResponse struct {
 }
 
 type RetInqueryOrder struct {
-	RespCode     string            `json:"resp_code"`
-	RespMsg      string            `json:"resp_msg"`
-	Status       string            `json:"status"`
-	Amount       string            `json:"amount"`
-	CustomerData *CustomerData     `json:"customer_data,omitempty"`
-	LoyaltyData  interface{}       `json:"loyalty_data,omitempty"`
-	DBRefNo      string            `json:"db_ref_no"`
-	ExtraData    map[string]string `json:"extra_data,omitempty"`
-	StatusText   string            `json:"status_text"`
+	RespCode     string        `json:"resp_code"`
+	RespMsg      string        `json:"resp_msg"`
+	Status       string        `json:"status"`
+	Amount       string        `json:"amount"`
+	CustomerData *CustomerData `json:"customer_data,omitempty"`
+	LoyaltyData  *LoyaltyData  `json:"loyalty_data,omitempty"`
+	DBRefNo      string        `json:"db_ref_no"`
+	ExtraData    *ExtraData    `json:"extra_data,omitempty"`
+	StatusText   string        `json:"status_text"`
 }
 
 type CustomerData struct {
 	UserID   string `json:"user_id"`
 	UniqueID string `json:"unique_id"`
+}
+
+type LoyaltyData struct {
+	KbStatus              string `json:"kb_status"`
+	KbTxnID               string `json:"kb_txn_id"`
+	KbCardID              string `json:"kb_card_id"`
+	KbUsableLP            string `json:"kb_usable_lp"`
+	KbLoyaltyPK           string `json:"kb_loyalty_pk"`
+	HasKbLoyalty          string `json:"has_kb_loyalty"`
+	KbDescription         string `json:"kb_description"`
+	KbLimitValue          string `json:"kb_limit_value"`
+	KbLoyaltyType         string `json:"kb_loyalty_type"`
+	KbDatesOfWeek         string `json:"kb_dates_of_week"`
+	KbNoTxnAmount         string `json:"kb_no_txn_amount"`
+	KbYesTxnAmount        string `json:"kb_yes_txn_amount"`
+	KbLoyaltyProviderName string `json:"kb_loyalty_provider_name"`
+}
+
+type ExtraData struct {
+	ID               string `json:"_id"`
+	Pan              string `json:"pan"`
+	RRN              string `json:"rrn"`
+	Amount           string `json:"amount"`
+	PosID            string `json:"pos_id"`
+	OrderID          string `json:"order_id"`
+	RespMsg          string `json:"resp_msg"`
+	TraceNo          string `json:"trace_no"`
+	DateTime         string `json:"date_time"`
+	RespCOde         string `json:"resp_code"`
+	TerminalID       string `json:"terminal_id"`
+	ApprovalCode     string `json:"approved_code"`
+	CurrencyCode     string `json:"currency_code"`
+	PaymentRequestID string `json:"payment_request_id"`
 }
 
 // Notify
