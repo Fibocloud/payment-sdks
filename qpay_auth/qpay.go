@@ -17,13 +17,13 @@ type qpay_auth struct {
 }
 
 type QPayAuth interface {
-	CreateInvoice(input QPayCreateInvoiceInput) (QPaySimpleInvoiceResponse, *qpay_auth, error)
-	GetInvoice(invoiceId string) (QpayInvoiceGetResponse, *qpay_auth, error)
-	CancelInvoice(invoiceId string) (interface{}, *qpay_auth, error)
-	GetPayment(invoiceId string) (interface{}, *qpay_auth, error)
-	CheckPayment(invoiceId string, pageLimit, pageNumber int64) (QpayPaymentCheckResponse, *qpay_auth, error)
-	CancelPayment(invoiceId, paymentUUID string) (QpayPaymentCheckResponse, *qpay_auth, error)
-	RefundPayment(invoiceId, paymentUUID string) (interface{}, *qpay_auth, error)
+	CreateInvoice(input QPayCreateInvoiceInput) (QPaySimpleInvoiceResponse, QPayAuth, error)
+	GetInvoice(invoiceId string) (QpayInvoiceGetResponse, QPayAuth, error)
+	CancelInvoice(invoiceId string) (interface{}, QPayAuth, error)
+	GetPayment(invoiceId string) (interface{}, QPayAuth, error)
+	CheckPayment(invoiceId string, pageLimit, pageNumber int64) (QpayPaymentCheckResponse, QPayAuth, error)
+	CancelPayment(invoiceId, paymentUUID string) (QpayPaymentCheckResponse, QPayAuth, error)
+	RefundPayment(invoiceId, paymentUUID string) (interface{}, QPayAuth, error)
 	// GetPaymentList()
 }
 
@@ -46,7 +46,7 @@ func New(username, password, endpoint, callback, invoiceCode, merchantId string)
 	}
 }
 
-func (q *qpay_auth) CreateInvoice(input QPayCreateInvoiceInput) (QPaySimpleInvoiceResponse, *qpay_auth, error) {
+func (q *qpay_auth) CreateInvoice(input QPayCreateInvoiceInput) (QPaySimpleInvoiceResponse, QPayAuth, error) {
 	vals := url.Values{}
 	for k, v := range input.CallbackParam {
 		vals.Add(k, v)
@@ -73,7 +73,7 @@ func (q *qpay_auth) CreateInvoice(input QPayCreateInvoiceInput) (QPaySimpleInvoi
 
 	return response, q, nil
 }
-func (q *qpay_auth) GetInvoice(invoiceId string) (QpayInvoiceGetResponse, *qpay_auth, error) {
+func (q *qpay_auth) GetInvoice(invoiceId string) (QpayInvoiceGetResponse, QPayAuth, error) {
 	res, err := q.httpRequestQPay(nil, QPayInvoiceGet, invoiceId)
 	if err != nil {
 		return QpayInvoiceGetResponse{}, q, err
@@ -84,7 +84,7 @@ func (q *qpay_auth) GetInvoice(invoiceId string) (QpayInvoiceGetResponse, *qpay_
 
 	return response, q, nil
 }
-func (q *qpay_auth) CancelInvoice(invoiceId string) (interface{}, *qpay_auth, error) {
+func (q *qpay_auth) CancelInvoice(invoiceId string) (interface{}, QPayAuth, error) {
 	res, err := q.httpRequestQPay(nil, QPayInvoiceCancel, invoiceId)
 	if err != nil {
 		return nil, q, err
@@ -96,7 +96,7 @@ func (q *qpay_auth) CancelInvoice(invoiceId string) (interface{}, *qpay_auth, er
 	return response, q, nil
 }
 
-func (q *qpay_auth) GetPayment(invoiceId string) (interface{}, *qpay_auth, error) {
+func (q *qpay_auth) GetPayment(invoiceId string) (interface{}, QPayAuth, error) {
 	res, err := q.httpRequestQPay(nil, QPayPaymentGet, invoiceId)
 	if err != nil {
 		return nil, q, err
@@ -108,7 +108,7 @@ func (q *qpay_auth) GetPayment(invoiceId string) (interface{}, *qpay_auth, error
 	return response, q, nil
 }
 
-func (q *qpay_auth) CheckPayment(invoiceId string, pageLimit, pageNumber int64) (QpayPaymentCheckResponse, *qpay_auth, error) {
+func (q *qpay_auth) CheckPayment(invoiceId string, pageLimit, pageNumber int64) (QpayPaymentCheckResponse, QPayAuth, error) {
 	req := QpayPaymentCheckRequest{}
 	req.ObjectID = invoiceId
 	req.ObjectType = "INVOICE"
@@ -127,7 +127,7 @@ func (q *qpay_auth) CheckPayment(invoiceId string, pageLimit, pageNumber int64) 
 	return response, q, nil
 }
 
-func (q *qpay_auth) CancelPayment(invoiceId, paymentUUID string) (QpayPaymentCheckResponse, *qpay_auth, error) {
+func (q *qpay_auth) CancelPayment(invoiceId, paymentUUID string) (QpayPaymentCheckResponse, QPayAuth, error) {
 	var req QpayPaymentCancelRequest
 
 	req.CallbackUrl = q.callback + paymentUUID
@@ -136,6 +136,17 @@ func (q *qpay_auth) CancelPayment(invoiceId, paymentUUID string) (QpayPaymentChe
 	var response QpayPaymentCheckResponse
 
 	res, err := q.httpRequestQPay(req, QPayPaymentCancel, invoiceId)
+	// ret := func() QPayAuth {
+	// 	return &qpay_auth{
+	// 		endpoint:    q.endpoint,
+	// 		password:    q.password,
+	// 		username:    q.username,
+	// 		callback:    q.callback,
+	// 		invoiceCode: q.invoiceCode,
+	// 		merchantId:  q.merchantId,
+	// 		loginObject: q.loginObject,
+	// 	}
+	// }()
 	if err != nil {
 		return response, q, err
 	}
@@ -145,7 +156,7 @@ func (q *qpay_auth) CancelPayment(invoiceId, paymentUUID string) (QpayPaymentChe
 	return response, q, nil
 }
 
-func (q *qpay_auth) RefundPayment(invoiceId, paymentUUID string) (interface{}, *qpay_auth, error) {
+func (q *qpay_auth) RefundPayment(invoiceId, paymentUUID string) (interface{}, QPayAuth, error) {
 	var req QpayPaymentCancelRequest
 
 	req.CallbackUrl = q.callback + paymentUUID
