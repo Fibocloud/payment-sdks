@@ -36,9 +36,21 @@ var (
 		Url:    "/v4/spose/payment/refund",
 		Method: http.MethodPut,
 	}
+	TokipayDeeplink = utils.API{
+		Url:    "/v4/third-party/payment/deeplink",
+		Method: http.MethodPost,
+	}
+	TokipayPhoneRequest = utils.API{
+		Url:    "/v4/third-party/payment/request",
+		Method: http.MethodPost,
+	}
+	TokipayTransactionStatus = utils.API{
+		Url:    "/v4/third-party/payment/status?requestId=",
+		Method: http.MethodGet,
+	}
 )
 
-func (q *tokipay) httpRequestTokipay(body interface{}, api utils.API, urlExt string) (response []byte, err error) {
+func (q *tokipay) httpRequestTokipayPOS(body interface{}, api utils.API, urlExt string) (response []byte, err error) {
 	var requestByte []byte
 	var requestBody *bytes.Reader
 	if body == nil {
@@ -50,7 +62,31 @@ func (q *tokipay) httpRequestTokipay(body interface{}, api utils.API, urlExt str
 
 	req, _ := http.NewRequest(api.Method, q.endpoint+api.Url+urlExt, requestBody)
 	req.Header.Add("Authorization", q.authorization)
-	req.Header.Add("api_key", q.apiKey)
+	req.Header.Add("api_key", "spos_pay")
+	req.Header.Add("im_api_key", q.imApiKey)
+
+	res, err := http.DefaultClient.Do(req)
+
+	response, _ = io.ReadAll(res.Body)
+	if res.StatusCode != 200 {
+		return nil, errors.New(string(response))
+	}
+	return
+}
+
+func (q *tokipay) httpRequestTokipayThirdParty(body interface{}, api utils.API, urlExt string) (response []byte, err error) {
+	var requestByte []byte
+	var requestBody *bytes.Reader
+	if body == nil {
+		requestBody = bytes.NewReader(nil)
+	} else {
+		requestByte, _ = json.Marshal(body)
+		requestBody = bytes.NewReader(requestByte)
+	}
+
+	req, _ := http.NewRequest(api.Method, q.endpoint+api.Url+urlExt, requestBody)
+	req.Header.Add("Authorization", q.authorization)
+	req.Header.Add("api_key", "third_party_pay")
 	req.Header.Add("im_api_key", q.imApiKey)
 
 	res, err := http.DefaultClient.Do(req)

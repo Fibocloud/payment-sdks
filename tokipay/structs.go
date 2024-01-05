@@ -13,13 +13,14 @@ type (
 		Authorization string `json:"authorization"`
 	}
 
-	TokipayPaymentQrInput struct {
-		OrderId     string `json:"orderId"`
-		Amount      int64  `json:"amount"`
-		Notes       string `json:"notes"`
-		PhoneNo     string `json:"phoneNo"`
-		CountryCode string `json:"countryCode"`
-		RequestId   string `json:"requestId"`
+	TokipayPaymentInput struct {
+		OrderId      string `json:"orderId"`
+		Amount       int64  `json:"amount"`
+		Notes        string `json:"notes"`
+		PhoneNo      string `json:"phoneNo"`
+		CountryCode  string `json:"countryCode"`
+		RequestId    string `json:"requestId"`
+		AppSchemaIos string `json:"appSchemaIos"`
 	}
 
 	// Tokipay Payment Response
@@ -85,5 +86,49 @@ type (
 	TokipayRefundInput struct {
 		RequestId    string `json:"requestId"`
 		RefundAmount int64  `json:"refundAmount"`
+	}
+
+	TokipayDeeplinkRequest struct {
+		SuccessUrl        string `json:"successUrl"`
+		FailureUrl        string `json:"failureUrl"`
+		OrderId           string `json:"orderId"`
+		MerchantId        string `json:"merchantId"`
+		Amount            int64  `json:"amount"`
+		Notes             string `json:"notes"`
+		AppSchemaIos      string `json:"appSchemaIos"`
+		Authorization     string `json:"authorization"`
+		TokiWebSuccessUrl string `json:"tokiWebSuccessUrl"`
+		TokiWebFailureUrl string `json:"tokiWebFailureUrl"`
+	}
+	TokipayDeeplinkResponse struct {
+		StatusCode int                         `json:"statusCode"`
+		Error      string                      `json:"error"`
+		Message    string                      `json:"message"`
+		Data       TokipayDeeplinkDataResponse `json:"data"`
+		Type       string                      `json:"type"`
+	}
+	TokipayDeeplinkDataResponse struct {
+		Deeplink string `json:"deeplink"`
+	}
+	TokipayThirdPartyPhoneRequest struct {
+		SuccessUrl        string `json:"successUrl"`
+		FailureUrl        string `json:"failureUrl"`
+		OrderId           string `json:"orderId"`
+		MerchantId        string `json:"merchantId"`
+		Amount            int64  `json:"amount"`
+		Notes             string `json:"notes"`
+		PhoneNo           string `json:"phoneNo"`
+		CountryCode       string `json:"countryCode"`
+		Authorization     string `json:"authorization"`
+		TokiWebSuccessUrl string `json:"tokiWebSuccessUrl"`
+		TokiWebFailureUrl string `json:"tokiWebFailureUrl"`
+	}
+
+	TokipayThirdPartyPhoneResponse struct {
+		StatusCode int         `json:"statusCode"`
+		Error      string      `json:"error"`
+		Message    string      `json:"message"`
+		Data       interface{} `json:"data"`
+		Type       string      `json:"type"`
 	}
 )

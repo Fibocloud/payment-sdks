@@ -7,34 +7,39 @@ import (
 
 type tokipay struct {
 	endpoint      string
-	apiKey        string
 	imApiKey      string
 	authorization string
 	merchantId    string
+	SuccessUrl    string
+	FailureUrl    string
 }
 
 type Tokipay interface {
-	PaymentQr(input TokipayPaymentQrInput) (TokipayPaymentResponse, error)
-	PaymentSentUser(input TokipayPaymentQrInput) (TokipayPaymentResponse, error)
-	PaymentScanUser(input TokipayPaymentQrInput) (TokipayPaymentResponse, error)
+	PaymentQr(input TokipayPaymentInput) (TokipayPaymentResponse, error)
+	PaymentSentUser(input TokipayPaymentInput) (TokipayPaymentResponse, error)
+	PaymentScanUser(input TokipayPaymentInput) (TokipayPaymentResponse, error)
 	PaymentStatus(requestId string) (TokipayPaymentStatusResponse, error)
 	PaymentCancel(requestId string) (TokipayPaymentStatusResponse, error)
+	PaymentThirdPartyDeeplink(input TokipayPaymentInput) (TokipayDeeplinkResponse, error)
+	PaymentThirdPartyPhoneRequest(input TokipayPaymentInput) (TokipayThirdPartyPhoneResponse, error)
+	PaymentThirdPartyStatus(requestId string) (TokipayPaymentStatusResponse, error)
 }
 
-func New(endpoint, apiKey, imApiKey, authorization, merchantId string) Tokipay {
+func New(endpoint, imApiKey, authorization, merchantId, successUrl, failureUrl string) Tokipay {
 	return &tokipay{
 		endpoint:      endpoint,
-		apiKey:        apiKey,
 		imApiKey:      imApiKey,
 		authorization: authorization,
 		merchantId:    merchantId,
+		SuccessUrl:    successUrl,
+		FailureUrl:    failureUrl,
 	}
 }
 
-func (q *tokipay) PaymentQr(input TokipayPaymentQrInput) (TokipayPaymentResponse, error) {
+func (q *tokipay) PaymentQr(input TokipayPaymentInput) (TokipayPaymentResponse, error) {
 	request := TokipayPaymentQrRequest{
-		SuccessUrl:    "www.mtm.mn",
-		FailureUrl:    "www.mtm.mn",
+		SuccessUrl:    q.SuccessUrl,
+		FailureUrl:    q.FailureUrl,
 		OrderId:       input.OrderId,
 		MerchantId:    q.merchantId,
 		Amount:        input.Amount,
@@ -42,7 +47,7 @@ func (q *tokipay) PaymentQr(input TokipayPaymentQrInput) (TokipayPaymentResponse
 		Authorization: q.authorization,
 	}
 
-	res, err := q.httpRequestTokipay(request, TokipayPaymentQr, "")
+	res, err := q.httpRequestTokipayPOS(request, TokipayPaymentQr, "")
 	if err != nil {
 		return TokipayPaymentResponse{}, err
 	}
@@ -54,10 +59,10 @@ func (q *tokipay) PaymentQr(input TokipayPaymentQrInput) (TokipayPaymentResponse
 	return response, nil
 }
 
-func (q *tokipay) PaymentSentUser(input TokipayPaymentQrInput) (TokipayPaymentResponse, error) {
+func (q *tokipay) PaymentSentUser(input TokipayPaymentInput) (TokipayPaymentResponse, error) {
 	request := TokipayPaymentSentUserRequest{
-		SuccessUrl:    "www.mtm.mn",
-		FailureUrl:    "www.mtm.mn",
+		SuccessUrl:    q.SuccessUrl,
+		FailureUrl:    q.FailureUrl,
 		OrderId:       input.OrderId,
 		MerchantId:    q.merchantId,
 		Amount:        input.Amount,
@@ -67,7 +72,7 @@ func (q *tokipay) PaymentSentUser(input TokipayPaymentQrInput) (TokipayPaymentRe
 		CountryCode:   input.CountryCode,
 	}
 
-	res, err := q.httpRequestTokipay(request, TokipayPaymentSentUser, "")
+	res, err := q.httpRequestTokipayPOS(request, TokipayPaymentSentUser, "")
 	if err != nil {
 		return TokipayPaymentResponse{}, err
 	}
@@ -80,10 +85,10 @@ func (q *tokipay) PaymentSentUser(input TokipayPaymentQrInput) (TokipayPaymentRe
 	return response, nil
 }
 
-func (q *tokipay) PaymentScanUser(input TokipayPaymentQrInput) (TokipayPaymentResponse, error) {
+func (q *tokipay) PaymentScanUser(input TokipayPaymentInput) (TokipayPaymentResponse, error) {
 	request := TokipayPaymentScanUserRequest{
-		SuccessUrl:    "www.mtm.mn",
-		FailureUrl:    "www.mtm.mn",
+		SuccessUrl:    q.SuccessUrl,
+		FailureUrl:    q.FailureUrl,
 		OrderId:       input.OrderId,
 		MerchantId:    q.merchantId,
 		Amount:        input.Amount,
@@ -92,7 +97,7 @@ func (q *tokipay) PaymentScanUser(input TokipayPaymentQrInput) (TokipayPaymentRe
 		RequestId:     input.RequestId,
 	}
 
-	res, err := q.httpRequestTokipay(request, TokipayPaymentScanUser, "")
+	res, err := q.httpRequestTokipayPOS(request, TokipayPaymentScanUser, "")
 	if err != nil {
 		return TokipayPaymentResponse{}, err
 	}
@@ -108,7 +113,79 @@ func (q *tokipay) PaymentScanUser(input TokipayPaymentQrInput) (TokipayPaymentRe
 
 func (q *tokipay) PaymentStatus(requestId string) (TokipayPaymentStatusResponse, error) {
 
-	res, err := q.httpRequestTokipay(nil, TokipayPaymentStatus, requestId)
+	res, err := q.httpRequestTokipayPOS(nil, TokipayPaymentStatus, requestId)
+	if err != nil {
+		return TokipayPaymentStatusResponse{}, err
+	}
+
+	var response TokipayPaymentStatusResponse
+	json.Unmarshal(res, &response)
+	if response.StatusCode != 200 {
+		return TokipayPaymentStatusResponse{}, errors.New(response.Error + ":" + response.Message)
+	}
+	return response, nil
+}
+
+func (q *tokipay) PaymentThirdPartyDeeplink(input TokipayPaymentInput) (TokipayDeeplinkResponse, error) {
+	request := TokipayDeeplinkRequest{
+		SuccessUrl:        q.SuccessUrl,
+		FailureUrl:        q.FailureUrl,
+		OrderId:           input.OrderId,
+		MerchantId:        q.merchantId,
+		Amount:            input.Amount,
+		Notes:             input.Notes,
+		AppSchemaIos:      input.AppSchemaIos,
+		Authorization:     q.authorization,
+		TokiWebSuccessUrl: q.SuccessUrl,
+		TokiWebFailureUrl: q.FailureUrl,
+	}
+
+	res, err := q.httpRequestTokipayThirdParty(request, TokipayDeeplink, "")
+	if err != nil {
+		return TokipayDeeplinkResponse{}, err
+	}
+
+	var response TokipayDeeplinkResponse
+	json.Unmarshal(res, &response)
+
+	if response.StatusCode != 200 {
+		return TokipayDeeplinkResponse{}, errors.New(response.Error + ":" + response.Message)
+	}
+	return response, nil
+}
+
+func (q *tokipay) PaymentThirdPartyPhoneRequest(input TokipayPaymentInput) (TokipayThirdPartyPhoneResponse, error) {
+	request := TokipayThirdPartyPhoneRequest{
+		SuccessUrl:        q.SuccessUrl,
+		FailureUrl:        q.FailureUrl,
+		OrderId:           input.OrderId,
+		MerchantId:        q.merchantId,
+		Amount:            input.Amount,
+		Notes:             input.Notes,
+		PhoneNo:           input.PhoneNo,
+		CountryCode:       "+976",
+		Authorization:     q.authorization,
+		TokiWebSuccessUrl: q.SuccessUrl,
+		TokiWebFailureUrl: q.FailureUrl,
+	}
+
+	res, err := q.httpRequestTokipayThirdParty(request, TokipayPhoneRequest, "")
+	if err != nil {
+		return TokipayThirdPartyPhoneResponse{}, err
+	}
+
+	var response TokipayThirdPartyPhoneResponse
+	json.Unmarshal(res, &response)
+
+	if response.StatusCode != 200 {
+		return TokipayThirdPartyPhoneResponse{}, errors.New(response.Error + ":" + response.Message)
+	}
+	return response, nil
+}
+
+func (q *tokipay) PaymentThirdPartyStatus(requestId string) (TokipayPaymentStatusResponse, error) {
+
+	res, err := q.httpRequestTokipayThirdParty(nil, TokipayTransactionStatus, requestId)
 	if err != nil {
 		return TokipayPaymentStatusResponse{}, err
 	}
@@ -123,7 +200,7 @@ func (q *tokipay) PaymentStatus(requestId string) (TokipayPaymentStatusResponse,
 
 func (q *tokipay) PaymentCancel(requestId string) (TokipayPaymentStatusResponse, error) {
 
-	res, err := q.httpRequestTokipay(nil, TokipayPaymentCancel, requestId)
+	res, err := q.httpRequestTokipayPOS(nil, TokipayPaymentCancel, requestId)
 	if err != nil {
 		return TokipayPaymentStatusResponse{}, err
 	}
@@ -143,7 +220,7 @@ func (q *tokipay) PaymentRefund(input TokipayRefundInput) (TokipayPaymentRespons
 		RefundAmount: input.RefundAmount,
 		MerchantId:   q.merchantId,
 	}
-	res, err := q.httpRequestTokipay(request, TokipayRefund, "")
+	res, err := q.httpRequestTokipayPOS(request, TokipayRefund, "")
 	if err != nil {
 		return TokipayPaymentResponseExt{}, err
 	}
