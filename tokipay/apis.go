@@ -13,39 +13,39 @@ import (
 // SocialPay
 var (
 	TokipayPaymentQr = utils.API{
-		Url:    "/v4/spose/payment/request",
+		Url:    "/jump/v4/spose/payment/request",
 		Method: http.MethodPost,
 	}
 	TokipayPaymentSentUser = utils.API{
-		Url:    "/v4/spose/payment/user-request",
+		Url:    "/jump/v4/spose/payment/user-request",
 		Method: http.MethodPost,
 	}
 	TokipayPaymentScanUser = utils.API{
-		Url:    "/v4/spose/payment/scan/user-request",
+		Url:    "/jump/v4/spose/payment/scan/user-request",
 		Method: http.MethodPost,
 	}
 	TokipayPaymentStatus = utils.API{
-		Url:    "/v4/spose/payment/status?requestId=",
+		Url:    "/jump/v4/spose/payment/status?requestId=",
 		Method: http.MethodGet,
 	}
 	TokipayPaymentCancel = utils.API{
-		Url:    "/v4/spose/payment/request?requestId=",
+		Url:    "/jump/v4/spose/payment/request?requestId=",
 		Method: http.MethodDelete,
 	}
 	TokipayRefund = utils.API{
-		Url:    "/v4/spose/payment/refund",
+		Url:    "/jump/v4/spose/payment/refund",
 		Method: http.MethodPut,
 	}
 	TokipayDeeplink = utils.API{
-		Url:    "/v4/third-party/payment/deeplink",
+		Url:    "/jump/v1/third-party/payment/deeplink",
 		Method: http.MethodPost,
 	}
 	TokipayPhoneRequest = utils.API{
-		Url:    "/v4/third-party/payment/request",
+		Url:    "/jump/v1/third-party/payment/request",
 		Method: http.MethodPost,
 	}
 	TokipayTransactionStatus = utils.API{
-		Url:    "/v4/third-party/payment/status?requestId=",
+		Url:    "/jump/v1/third-party/payment/status?requestId=",
 		Method: http.MethodGet,
 	}
 )
@@ -62,7 +62,7 @@ func (q *tokipay) httpRequestTokipayPOS(body interface{}, api utils.API, urlExt 
 
 	req, _ := http.NewRequest(api.Method, q.endpoint+api.Url+urlExt, requestBody)
 	req.Header.Add("Authorization", q.authorization)
-	req.Header.Add("api_key", "spos_pay")
+	req.Header.Add("api_key", "spos_pay_v4")
 	req.Header.Add("im_api_key", q.imApiKey)
 
 	res, err := http.DefaultClient.Do(req)
@@ -87,7 +87,7 @@ func (q *tokipay) httpRequestTokipayThirdParty(body interface{}, api utils.API, 
 	req, _ := http.NewRequest(api.Method, q.endpoint+api.Url+urlExt, requestBody)
 	req.Header.Add("Authorization", q.authorization)
 	req.Header.Add("api_key", "third_party_pay")
-	req.Header.Add("im_api_key", q.imApiKey)
+	// req.Header.Add("im_api_key", q.imApiKey)
 
 	res, err := http.DefaultClient.Do(req)
 
