@@ -45,28 +45,30 @@ type StockInput struct {
 }
 
 type CreateEbarimtResponse struct {
-	Amount        string  `json:"amount"`
-	Vat           string  `json:"vat"`
-	CashAmount    string  `json:"cashAmount"`
-	NonCashAmount string  `json:"nonCashAmount"`
-	CityTax       string  `json:"cityTax"`
-	CustomerNo    string  `json:"customerNo"`
-	BillType      string  `json:"billType"`
-	BranchNo      string  `json:"branchNo"`
-	DistrictCode  string  `json:"districtCode"`
-	Stocks        []Stock `json:"stocks"`
-	TaxType       string  `json:"taxType"`
-	RegisterNo    string  `json:"registerNo"`
-	BillId        string  `json:"billId"`
-	MacAddress    string  `json:"macAddress"`
-	Date          string  `json:"date"`
-	Lottery       string  `json:"lottery"`
-	InternalCode  string  `json:"internalCode"`
-	QrData        string  `json:"qrData"`
-	MerchantId    string  `json:"merchantId"`
-	Success       bool    `json:"success"`
-	Message       string  `json:"message"`
-	ErrorCode     int64   `json:"errorCode"`
+	Amount            string  `json:"amount"`
+	Vat               string  `json:"vat"`
+	CashAmount        string  `json:"cashAmount"`
+	NonCashAmount     string  `json:"nonCashAmount"`
+	CityTax           string  `json:"cityTax"`
+	CustomerNo        string  `json:"customerNo"`
+	BillType          string  `json:"billType"`
+	BranchNo          string  `json:"branchNo"`
+	DistrictCode      string  `json:"districtCode"`
+	Stocks            []Stock `json:"stocks"`
+	TaxType           string  `json:"taxType"`
+	RegisterNo        string  `json:"registerNo"`
+	BillId            string  `json:"billId"`
+	MacAddress        string  `json:"macAddress"`
+	Date              string  `json:"date"`
+	Lottery           string  `json:"lottery"`
+	InternalCode      string  `json:"internalCode"`
+	QrData            string  `json:"qrData"`
+	MerchantId        string  `json:"merchantId"`
+	Success           bool    `json:"success"`
+	Message           string  `json:"message"`
+	ErrorCode         int64   `json:"errorCode"`
+	WarningMsg        string  `json:"warningMsg"`
+	LotteryWarningMsg string  `json:"lotteryWarningMsg"`
 }
 
 type CheckAPIItem struct {
