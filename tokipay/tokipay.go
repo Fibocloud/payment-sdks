@@ -12,6 +12,7 @@ type tokipay struct {
 	merchantId    string
 	SuccessUrl    string
 	FailureUrl    string
+	AppSchemaIos  string
 }
 
 type Tokipay interface {
@@ -25,7 +26,7 @@ type Tokipay interface {
 	PaymentThirdPartyStatus(requestId string) (TokipayPaymentStatusResponse, error)
 }
 
-func New(endpoint, imApiKey, authorization, merchantId, successUrl, failureUrl string) Tokipay {
+func New(endpoint, imApiKey, authorization, merchantId, successUrl, failureUrl, appSchemaIos string) Tokipay {
 	return &tokipay{
 		endpoint:      endpoint,
 		imApiKey:      imApiKey,
@@ -33,6 +34,7 @@ func New(endpoint, imApiKey, authorization, merchantId, successUrl, failureUrl s
 		merchantId:    merchantId,
 		SuccessUrl:    successUrl,
 		FailureUrl:    failureUrl,
+		AppSchemaIos:  appSchemaIos,
 	}
 }
 
@@ -128,13 +130,18 @@ func (q *tokipay) PaymentStatus(requestId string) (TokipayPaymentStatusResponse,
 
 func (q *tokipay) PaymentThirdPartyDeeplink(input TokipayPaymentInput) (TokipayDeeplinkResponse, error) {
 	request := TokipayDeeplinkRequest{
-		SuccessUrl:        q.SuccessUrl,
+		SuccessUrl: func() string {
+			if input.SuccessUrl != "" {
+				return input.SuccessUrl
+			}
+			return q.SuccessUrl
+		}(),
 		FailureUrl:        q.FailureUrl,
 		OrderId:           input.OrderId,
 		MerchantId:        q.merchantId,
 		Amount:            input.Amount,
 		Notes:             input.Notes,
-		AppSchemaIos:      input.AppSchemaIos,
+		AppSchemaIos:      q.AppSchemaIos,
 		Authorization:     q.authorization,
 		TokiWebSuccessUrl: q.SuccessUrl,
 		TokiWebFailureUrl: q.FailureUrl,

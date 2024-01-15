@@ -14,13 +14,13 @@ type (
 	}
 
 	TokipayPaymentInput struct {
-		OrderId      string `json:"orderId"`
-		Amount       int64  `json:"amount"`
-		Notes        string `json:"notes"`
-		PhoneNo      string `json:"phoneNo"`
-		CountryCode  string `json:"countryCode"`
-		RequestId    string `json:"requestId"`
-		AppSchemaIos string `json:"appSchemaIos"`
+		OrderId     string `json:"orderId"`
+		Amount      int64  `json:"amount"`
+		Notes       string `json:"notes"`
+		PhoneNo     string `json:"phoneNo"`
+		CountryCode string `json:"countryCode"`
+		RequestId   string `json:"requestId"`
+		SuccessUrl  string `json:"successUrl"`
 	}
 
 	// Tokipay Payment Response
