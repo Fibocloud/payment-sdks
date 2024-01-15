@@ -9,6 +9,7 @@ const (
 	TimeFormatYYYYMMDDHHMMSS = "20060102150405"
 	TimeFormatYYYYMMDD       = "20060102"
 	HttpContent              = "application/json"
+	XmlContent               = "application/xml"
 )
 
 // func HttpRequestMongolchat(body interface{}, api helper.API) (res *http.Response, err error) {
