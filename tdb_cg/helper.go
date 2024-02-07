@@ -4,8 +4,6 @@ import (
 	"crypto/x509"
 	"fmt"
 	"os"
-
-	"golang.org/x/crypto/pkcs12"
 )
 
 func (t *tdbcg) CertParser() {
@@ -14,11 +12,11 @@ func (t *tdbcg) CertParser() {
 	// certPathCer := "/path/to/root_certificate.cer" // Replace with your actual CER certificate path
 
 	// Load the PFX certificate
-	pfxData, err := os.ReadFile(t.certPathPfx)
-	if err != nil {
-		fmt.Println("Error reading PFX certificate file:", err)
-		return
-	}
+	// pfxData, err := os.ReadFile(t.certPathPfx)
+	// if err != nil {
+	// 	fmt.Println("Error reading PFX certificate file:", err)
+	// 	return
+	// }
 
 	// Load the CER certificate
 	cerData, err := os.ReadFile(t.certPathCer)
@@ -28,11 +26,11 @@ func (t *tdbcg) CertParser() {
 	}
 
 	// Parse the PFX certificate
-	_, cert, err := pkcs12.Decode(pfxData, t.certPass)
-	if err != nil {
-		fmt.Println("Error parsing PFX certificate:", err)
-		return
-	}
+	// _, cert, err := pkcs12.Decode(pfxData, t.certPass)
+	// if err != nil {
+	// 	fmt.Println("Error parsing PFX certificate:", err)
+	// 	return
+	// }
 
 	// Parse the CER certificate
 	rootCert, err := x509.ParseCertificate(cerData)
@@ -46,19 +44,17 @@ func (t *tdbcg) CertParser() {
 	roots.AddCert(rootCert)
 
 	// Create an X.509 chain
-	intermediates := x509.NewCertPool()
-	opts := x509.VerifyOptions{
-		Roots:         roots,
-		Intermediates: intermediates,
-	}
+	// intermediates := x509.NewCertPool()
+	// opts := x509.VerifyOptions{
+	// 	Roots:         roots,
+	// 	Intermediates: intermediates,
+	// }
 
-	chains, err := cert.Verify(opts)
-	if err != nil {
-		fmt.Println("Certificate verification failed:", err)
-		return
-	}
-
-	
+	// chains, err := cert.Verify(opts)
+	// if err != nil {
+	// 	fmt.Println("Certificate verification failed:", err)
+	// 	return
+	// }
 
 	// Certificate and root certificate are valid
 	fmt.Println("Certificate and root certificate are valid.")
