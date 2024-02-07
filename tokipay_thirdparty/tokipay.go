@@ -11,29 +11,27 @@ type tokipayThirdParty struct {
 	merchantId    string
 	SuccessUrl    string
 	FailureUrl    string
-	AppSchemaIos  string
 }
 
 type TokipayThirdParty interface {
-	PaymentSentUser(input TokipayPaymentInput, urlsParams string) (TokipayPaymentResponse, error)
+	PaymentSentUser(input TokipayPaymentInput) (TokipayPaymentResponse, error)
 	PaymentStatus(requestId string) (TokipayPaymentStatusResponse, error)
 }
 
-func New(endpoint, authorization, merchantId, successUrl, failureUrl, appSchemaIos string) TokipayThirdParty {
+func New(endpoint, authorization, merchantId, successUrl, failureUrl string) TokipayThirdParty {
 	return &tokipayThirdParty{
 		endpoint:      endpoint,
 		authorization: authorization,
 		merchantId:    merchantId,
 		SuccessUrl:    successUrl,
 		FailureUrl:    failureUrl,
-		AppSchemaIos:  appSchemaIos,
 	}
 }
 
-func (q *tokipayThirdParty) PaymentSentUser(input TokipayPaymentInput, urlsParams string) (TokipayPaymentResponse, error) {
+func (q *tokipayThirdParty) PaymentSentUser(input TokipayPaymentInput) (TokipayPaymentResponse, error) {
 	request := TokipayPaymentSentUserRequest{
-		SuccessUrl:    q.SuccessUrl + "?" + urlsParams,
-		FailureUrl:    q.FailureUrl + "?" + urlsParams,
+		SuccessUrl:    q.SuccessUrl,
+		FailureUrl:    q.FailureUrl,
 		OrderId:       input.OrderId,
 		MerchantId:    q.merchantId,
 		Amount:        input.Amount,
