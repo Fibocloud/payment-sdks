@@ -23,7 +23,7 @@ type Monpay interface {
 }
 
 func New(endpoint, username, accountId, callback string) Monpay {
-	return monpay{
+	return &monpay{
 		endpoint:    endpoint,
 		username:    username,
 		accoutnId:   accountId,
@@ -31,7 +31,7 @@ func New(endpoint, username, accountId, callback string) Monpay {
 	}
 }
 
-func (m monpay) GenerateQr(input MonpayQrInput) (response MonpayQrResponse, err error) {
+func (m *monpay) GenerateQr(input MonpayQrInput) (response MonpayQrResponse, err error) {
 	invoice := MonpayQrRequest{
 		Amount:       input.Amount,
 		GenerateUUID: true,
@@ -57,7 +57,7 @@ func (m monpay) GenerateQr(input MonpayQrInput) (response MonpayQrResponse, err 
 	return
 }
 
-func (m monpay) CheckQr(uuid string) (response MonpayCheckResponse, err error) {
+func (m *monpay) CheckQr(uuid string) (response MonpayCheckResponse, err error) {
 	res, err := m.httpRequestMonpay(nil, MonpayCheckQr, uuid)
 	if err != nil {
 		return
@@ -82,7 +82,7 @@ func (m monpay) CheckQr(uuid string) (response MonpayCheckResponse, err error) {
 
 var decoder = schema.NewDecoder()
 
-func (m monpay) CallbackParser(url *url.URL) (response MonpayCallback) {
+func (m *monpay) CallbackParser(url *url.URL) (response MonpayCallback) {
 	err := decoder.Decode(&response, url.Query())
 	if err != nil {
 		log.Println("Error in GET parameters : ", err)

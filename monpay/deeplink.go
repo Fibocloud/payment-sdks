@@ -28,7 +28,7 @@ type Deeplink interface {
 }
 
 func NewDeeplink(url, id, secret, grantType, webhookUrl string) Deeplink {
-	return deeplink{
+	return &deeplink{
 		endpoint:     url,
 		clientId:     id,
 		clientSecret: secret,
@@ -46,7 +46,7 @@ func (d deeplink) GetAccessToken() error {
 	return nil
 }
 
-func (d deeplink) CreateDeeplink(amount float64, invoiceType InvoiceType, branchUsername, desc, invoiceId string) (response DeeplinkCreateResponse, err error) {
+func (d *deeplink) CreateDeeplink(amount float64, invoiceType InvoiceType, branchUsername, desc, invoiceId string) (response DeeplinkCreateResponse, err error) {
 	body := DeeplinkCreateRequest{
 		RedirectUri: d.webhookUrl + "/" + invoiceId,
 		Amount:      amount,
@@ -65,7 +65,7 @@ func (d deeplink) CreateDeeplink(amount float64, invoiceType InvoiceType, branch
 	return
 }
 
-func (d deeplink) CheckInvoice(invoiceID string) (response DeeplinkCheckResponse, err error) {
+func (d *deeplink) CheckInvoice(invoiceID string) (response DeeplinkCheckResponse, err error) {
 	res, err := d.httpRequestDeeplink(nil, MonpayDeeplinkCheck, invoiceID)
 	if err != nil {
 		return
@@ -77,7 +77,7 @@ func (d deeplink) CheckInvoice(invoiceID string) (response DeeplinkCheckResponse
 	return
 }
 
-func (d deeplink) CallbackParser(url *url.URL) (response DeeplinkCallback) {
+func (d *deeplink) CallbackParser(url *url.URL) (response DeeplinkCallback) {
 	err := decoder.Decode(&response, url.Query())
 	if err != nil {
 		log.Println("Error in GET parameters : ", err)
