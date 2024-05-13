@@ -77,10 +77,12 @@ func (d *deeplink) getAccessToken() (err error) {
 		fmt.Print(err.Error())
 		return
 	}
-	err = json.Unmarshal(resp, d.accessToken)
+	var response AccessToken
+	err = json.Unmarshal(resp, &response)
 	if err != nil {
 		return
 	}
+	d.accessToken = &response
 	return
 }
 
