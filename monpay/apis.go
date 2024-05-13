@@ -8,7 +8,6 @@ import (
 	"io"
 	"net/http"
 	"net/url"
-	"strings"
 
 	"github.com/Fibocloud/payment-sdks/utils"
 )
@@ -63,7 +62,7 @@ func (d *deeplink) getAccessToken() (err error) {
 	parm.Add("client_id", d.clientId)
 	parm.Add("client_secret", d.clientSecret)
 	parm.Add("grant_type", d.grantType)
-	req, _ := http.NewRequest(http.MethodPost, d.endpoint+"/oath/token", strings.NewReader(parm.Encode()))
+	req, _ := http.NewRequest(http.MethodPost, d.endpoint+"/oath/token/?"+parm.Encode(), nil)
 	req.Header.Add("Content-Type", utils.HttpContent)
 
 	res, err := http.DefaultClient.Do(req)
