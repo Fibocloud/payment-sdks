@@ -9,6 +9,7 @@ const (
 	TimeFormatYYYYMMDDHHMMSS = "20060102150405"
 	TimeFormatYYYYMMDD       = "20060102"
 	HttpContent              = "application/json"
+	XForm                    = "application/x-www-form-urlencoded"
 	XmlContent               = "application/xml"
 )
 

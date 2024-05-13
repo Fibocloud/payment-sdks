@@ -63,7 +63,7 @@ func (d *deeplink) getAccessToken() (err error) {
 	parm.Add("client_secret", d.clientSecret)
 	parm.Add("grant_type", d.grantType)
 	req, _ := http.NewRequest(http.MethodPost, d.endpoint+"/oath/token/?"+parm.Encode(), nil)
-	req.Header.Add("Content-Type", utils.HttpContent)
+	req.Header.Add("Content-Type", utils.XForm)
 
 	res, err := http.DefaultClient.Do(req)
 	if err != nil {
