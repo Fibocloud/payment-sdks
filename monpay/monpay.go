@@ -91,3 +91,8 @@ func (m monpay) CallbackParser(url *url.URL) (response MonpayCallback) {
 	}
 	return
 }
+
+// Deeplink
+func (m monpay) CreateInvoice() {
+
+}

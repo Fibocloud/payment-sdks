@@ -2,19 +2,14 @@ package tdb_cg
 
 import (
 	"bytes"
-	"crypto/tls"
-	"crypto/x509"
 	"encoding/base64"
 	"encoding/json"
-	"encoding/pem"
 	"errors"
 	"fmt"
 	"io"
 	"net/http"
-	"os"
 
 	"github.com/Fibocloud/payment-sdks/utils"
-	"golang.org/x/crypto/pkcs12"
 )
 
 var (
@@ -60,34 +55,38 @@ func (q *tdbcg) httpRequest(body interface{}, api utils.API, urlExt string) (res
 		requestBody = bytes.NewReader(requestByte)
 	}
 
-	pfxData, err := os.ReadFile(q.certPathPfx)
-	if err != nil {
-		fmt.Println("Error reading PFX file:", err)
-		return nil, err
-	}
+	// pfxData, err := os.ReadFile(q.certPathPfx)
+	// if err != nil {
+	// 	fmt.Println("Error reading PFX file:", err)
+	// 	return nil, err
+	// }
 	// cerData, err := os.ReadFile(q.certPathCer)
 	// if err != nil {
 	// 	fmt.Println("Error reading PFX file:", err)
 	// 	return nil, err
 	// }
 
-	_, certification, err := pkcs12.Decode(pfxData, q.certPass)
-	derBytes, err := x509.MarshalCertificate(certification)
-	pemCert := pem.EncodeToMemory(&pem.Block{Type: "CERTIFICATE", Bytes: derBytes})
+	// _, certification, err := pkcs12.Decode(pfxData, q.certPass)
+	// derBytes, err := x509.MarshalCertificate(certification)
+	// pemCert := pem.EncodeToMemory(&pem.Block{Type: "CERTIFICATE", Bytes: derBytes})
 
-	cert, err := tls.LoadX509KeyPair(q.certPathCer, "keyandcerts.pem")
+	// cert, err := tls.LoadX509KeyPair(q.certPathCer, "keyandcerts.pem")
+	// if err != nil {
+	// 	fmt.Println("Error loading certificate:", err)
+	// 	return
+	// }
+	tlsCnf, err := LoadClientTLSCfg(q.certPathPfx, q.certPass, "")
 	if err != nil {
-		fmt.Println("Error loading certificate:", err)
-		return
+		fmt.Println("Error reading PFX file:", err)
+		return nil, err
 	}
-
 	// Create a TLS configuration with the loaded certificate
-	tlsConfig := &tls.Config{
-		Certificates: []tls.Certificate{cert},
-	}
+	// tlsConfig := &tls.Config{
+	// 	Certificates: []tls.Certificate{cert},
+	// }
 	client := &http.Client{
 		Transport: &http.Transport{
-			TLSClientConfig: tlsConfig,
+			TLSClientConfig: tlsCnf,
 		},
 	}
 
