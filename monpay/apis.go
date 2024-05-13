@@ -63,7 +63,7 @@ func (d *deeplink) getAccessToken() (err error) {
 	formBody.Add("client_id", d.clientId)
 	formBody.Add("client_secret", d.clientSecret)
 	formBody.Add("grant_type", d.grantType)
-	req, _ := http.NewRequest(http.MethodPost, d.endpoint+"/oath/token", strings.NewReader(formBody.Encode()))
+	req, _ := http.NewRequest(http.MethodPost, d.endpoint+"/oauth/token", strings.NewReader(formBody.Encode()))
 	req.Header.Add("Content-Type", utils.XForm)
 
 	res, err := http.DefaultClient.Do(req)
