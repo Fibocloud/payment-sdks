@@ -8,6 +8,7 @@ import (
 	"io"
 	"net/http"
 	"net/url"
+	"strings"
 
 	"github.com/Fibocloud/payment-sdks/utils"
 )
@@ -58,11 +59,11 @@ func (m *monpay) httpRequestMonpay(body interface{}, api utils.API, urlExt strin
 }
 
 func (d *deeplink) getAccessToken() (err error) {
-	parm := url.Values{}
-	parm.Add("client_id", d.clientId)
-	parm.Add("client_secret", d.clientSecret)
-	parm.Add("grant_type", d.grantType)
-	req, _ := http.NewRequest(http.MethodPost, d.endpoint+"/oath/token/?"+parm.Encode(), nil)
+	formBody := url.Values{}
+	formBody.Add("client_id", d.clientId)
+	formBody.Add("client_secret", d.clientSecret)
+	formBody.Add("grant_type", d.grantType)
+	req, _ := http.NewRequest(http.MethodPost, d.endpoint+"/oath/token", strings.NewReader(formBody.Encode()))
 	req.Header.Add("Content-Type", utils.XForm)
 
 	res, err := http.DefaultClient.Do(req)
