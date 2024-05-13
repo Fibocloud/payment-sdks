@@ -21,7 +21,7 @@ type AccessToken struct {
 }
 
 type Deeplink interface {
-	GetAccessToken() error
+	// GetAccessToken() error
 	CreateDeeplink(amount float64, invoiceType InvoiceType, branchUsername, desc, invoiceId string) (response DeeplinkCreateResponse, err error)
 	CheckInvoice(invoiceID string) (response DeeplinkCheckResponse, err error)
 	CallbackParser(url *url.URL) (response DeeplinkCallback)
@@ -38,13 +38,13 @@ func NewDeeplink(url, id, secret, grantType, webhookUrl string) Deeplink {
 	}
 }
 
-func (d deeplink) GetAccessToken() error {
-	err := d.getAccessToken()
-	if err != nil {
-		return err
-	}
-	return nil
-}
+// func (d deeplink) GetAccessToken() error {
+// 	err := d.getAccessToken()
+// 	if err != nil {
+// 		return err
+// 	}
+// 	return nil
+// }
 
 func (d *deeplink) CreateDeeplink(amount float64, invoiceType InvoiceType, branchUsername, desc, invoiceId string) (response DeeplinkCreateResponse, err error) {
 	body := DeeplinkCreateRequest{

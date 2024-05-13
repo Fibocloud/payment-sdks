@@ -58,7 +58,7 @@ func (m *monpay) httpRequestMonpay(body interface{}, api utils.API, urlExt strin
 	return
 }
 
-func (d *deeplink) getAccessToken() (err error) {
+func (d *deeplink) getAccessToken() (authToken AccessToken, err error) {
 	formBody := url.Values{}
 	formBody.Add("client_id", d.clientId)
 	formBody.Add("client_secret", d.clientSecret)
@@ -77,16 +77,21 @@ func (d *deeplink) getAccessToken() (err error) {
 		fmt.Print(err.Error())
 		return
 	}
-	var response AccessToken
-	err = json.Unmarshal(resp, &response)
+	err = json.Unmarshal(resp, &authToken)
 	if err != nil {
 		return
 	}
-	d.accessToken = &response
 	return
 }
 
 func (d *deeplink) httpRequestDeeplink(body interface{}, api utils.API, ext string) (response []byte, err error) {
+	if d.accessToken != nil {
+		auth, err := d.getAccessToken()
+		if err != nil {
+			return nil, err
+		}
+		d.accessToken = &auth
+	}
 	var requestByte []byte
 	var requestBody *bytes.Reader
 	if body == nil {
