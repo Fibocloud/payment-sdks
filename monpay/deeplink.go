@@ -10,6 +10,7 @@ import (
 type deeplink struct {
 	endpoint     string
 	webhookUrl   string
+	redirectUrl  string
 	clientId     string
 	clientSecret string
 	grantType    string
@@ -28,13 +29,14 @@ type Deeplink interface {
 	CallbackParser(url *url.URL) (response DeeplinkCallback)
 }
 
-func NewDeeplink(url, id, secret, grantType, webhookUrl string) Deeplink {
+func NewDeeplink(url, id, secret, grantType, webhookUrl, redirectUrl string) Deeplink {
 	return &deeplink{
 		endpoint:     url,
 		clientId:     id,
 		clientSecret: secret,
 		grantType:    grantType,
 		webhookUrl:   webhookUrl,
+		redirectUrl:  redirectUrl,
 		accessToken:  nil,
 	}
 }
@@ -49,11 +51,12 @@ func NewDeeplink(url, id, secret, grantType, webhookUrl string) Deeplink {
 
 func (d *deeplink) CreateDeeplink(amount float64, invoiceType InvoiceType, branchUsername, desc, invoiceId string) (response DeeplinkCreateResponse, err error) {
 	body := DeeplinkCreateRequest{
-		RedirectUri: d.webhookUrl + "/" + invoiceId,
-		Amount:      amount,
-		Receiver:    branchUsername,
-		InvoiceType: invoiceType,
-		Description: desc,
+		RedirectUri:      d.redirectUrl + "/" + invoiceId,
+		ClientServiceUrl: d.webhookUrl + "/" + invoiceId,
+		Amount:           amount,
+		Receiver:         branchUsername,
+		InvoiceType:      invoiceType,
+		Description:      desc,
 	}
 	res, err := d.httpRequestDeeplink(body, MonpayDeeplinkCreate, "")
 	if err != nil {
