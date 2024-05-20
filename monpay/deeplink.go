@@ -2,6 +2,7 @@ package monpay
 
 import (
 	"encoding/json"
+	"fmt"
 	"log"
 	"net/url"
 )
@@ -23,7 +24,7 @@ type AccessToken struct {
 type Deeplink interface {
 	// GetAccessToken() error
 	CreateDeeplink(amount float64, invoiceType InvoiceType, branchUsername, desc, invoiceId string) (response DeeplinkCreateResponse, err error)
-	CheckInvoice(invoiceID string) (response DeeplinkCheckResponse, err error)
+	CheckInvoice(invoiceID int) (response DeeplinkCheckResponse, err error)
 	CallbackParser(url *url.URL) (response DeeplinkCallback)
 }
 
@@ -65,8 +66,8 @@ func (d *deeplink) CreateDeeplink(amount float64, invoiceType InvoiceType, branc
 	return
 }
 
-func (d *deeplink) CheckInvoice(invoiceID string) (response DeeplinkCheckResponse, err error) {
-	res, err := d.httpRequestDeeplink(nil, MonpayDeeplinkCheck, invoiceID)
+func (d *deeplink) CheckInvoice(invoiceID int) (response DeeplinkCheckResponse, err error) {
+	res, err := d.httpRequestDeeplink(nil, MonpayDeeplinkCheck, fmt.Sprintf("%d", invoiceID))
 	if err != nil {
 		return
 	}
