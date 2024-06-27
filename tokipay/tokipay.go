@@ -7,6 +7,7 @@ import (
 
 type tokipay struct {
 	endpoint      string
+	apiKey        string
 	imApiKey      string
 	authorization string
 	merchantId    string
@@ -26,9 +27,10 @@ type Tokipay interface {
 	PaymentThirdPartyStatus(requestId string) (TokipayPaymentStatusResponse, error)
 }
 
-func New(endpoint, imApiKey, authorization, merchantId, successUrl, failureUrl, appSchemaIos string) Tokipay {
+func New(endpoint, apiKey, imApiKey, authorization, merchantId, successUrl, failureUrl, appSchemaIos string) Tokipay {
 	return &tokipay{
 		endpoint:      endpoint,
+		apiKey:        apiKey,
 		imApiKey:      imApiKey,
 		authorization: authorization,
 		merchantId:    merchantId,
