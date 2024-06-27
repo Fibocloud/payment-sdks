@@ -70,6 +70,7 @@ func createInputToRequestBody(input CreateEbarimtInput) *CreateEbarimtRequest {
 		BillType:      string(input.BillType),
 		BranchNo:      input.BranchNo,
 		DistrictCode:  input.DistrictCode,
+		BillIDSuffix:  input.BillIDSuffix,
 		Stocks:        stocks,
 	}
 }

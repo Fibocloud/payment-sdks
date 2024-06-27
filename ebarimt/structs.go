@@ -8,6 +8,7 @@ type CreateEbarimtRequest struct {
 	CityTax       string  `json:"cityTax"`
 	CustomerNo    string  `json:"customerNo"`
 	BillType      string  `json:"billType"`
+	BillIDSuffix  string  `json:"billIdSuffix"`
 	BranchNo      string  `json:"branchNo"`
 	DistrictCode  string  `json:"districtCode"`
 	Stocks        []Stock `json:"stocks"`
@@ -16,6 +17,7 @@ type CreateEbarimtRequest struct {
 type CreateEbarimtInput struct {
 	CustomerNo   string
 	BranchNo     string
+	BillIDSuffix string
 	BillType     ebarimtbilltype
 	DistrictCode string
 	Stocks       []StockInput
