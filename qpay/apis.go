@@ -96,6 +96,9 @@ func (q *qpay) httpRequestQPay(body interface{}, api utils.API, urlExt string) (
 	req.Header.Add("Authorization", "Bearer "+q.loginObject.AccessToken)
 
 	res, err := http.DefaultClient.Do(req)
+	if err != nil {
+		return nil, err
+	}
 
 	response, _ = io.ReadAll(res.Body)
 	if res.StatusCode != 200 {
