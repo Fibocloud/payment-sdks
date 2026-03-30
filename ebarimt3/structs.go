@@ -1,7 +1,5 @@
 package ebarimt3
 
-// CreateReceiptInput is the developer-friendly input to the SDK.
-// Fields are mapped to the full 3.0 wire format internally.
 type CreateReceiptInput struct {
 	// Required: merchant TIN (ТТД) registered in the PosAPI
 	MerchantTin string
@@ -33,9 +31,9 @@ type StockInput struct {
 	Name               string
 	MeasureUnit        string
 	Qty                float64
-	UnitPrice          float64  // base price per unit (without taxes)
-	CityTax            float64  // city tax amount for this item
-	Vat                float64  // VAT amount for this item
+	UnitPrice          float64 // base price per unit (without taxes)
+	CityTax            float64 // city tax amount for this item
+	Vat                float64 // VAT amount for this item
 	BarCode            string
 	BarCodeType        BarCodeType
 	ClassificationCode string // overrides CreateReceiptInput.ClassificationCode
@@ -103,15 +101,37 @@ type Payment struct {
 
 // CreateReceiptResponse is the response from POST /rest/receipt.
 type CreateReceiptResponse struct {
-	ID       string       `json:"id"`      // 33-digit main ДДТД
-	PosId    int          `json:"posId"`
-	Status   string       `json:"status"`  // SUCCESS | ERROR | PAYMENT
-	Message  string       `json:"message"`
-	QrDate   string       `json:"qrDate"`  // QR code data (called qrDate in the 3.0 spec)
-	Lottery  string       `json:"lottery"`
-	Date     string       `json:"date"`
-	Easy     bool       `json:"easy"`
-	Receipts []ReceiptRef `json:"receipts"`
+	ID           string  `json:"id"`
+	Version      string  `json:"version"`
+	TotalAmount  float64 `json:"totalAmount"`
+	TotalVAT     float64 `json:"totalVAT"`
+	TotalCityTax float64 `json:"totalCityTax"`
+	BranchNo     string  `json:"branchNo"`
+	DistrictCode string  `json:"districtCode"`
+	MerchantTin  string  `json:"merchantTin"`
+	PosNo        string  `json:"posNo"`
+	Type         string  `json:"type"`
+
+	Receipts []Receipt `json:"receipts"`
+	Payments []Payment `json:"payments"`
+
+	PosId   int    `json:"posId"`
+	Status  string `json:"status"`
+	Message string `json:"message,omitempty"`
+	QrData  string `json:"qrData"`
+	Lottery string `json:"lottery"`
+	Date    string `json:"date"`
+	Easy    bool   `json:"easy"`
+}
+
+type Receipt struct {
+	ID           string  `json:"id"`
+	TotalAmount  float64 `json:"totalAmount"`
+	TaxType      string  `json:"taxType"`
+	Items        []Item  `json:"items"`
+	MerchantTin  string  `json:"merchantTin"`
+	TotalVAT     float64 `json:"totalVAT"`
+	TotalCityTax float64 `json:"totalCityTax"`
 }
 
 // ReceiptRef is a sub-receipt identifier returned in the response.
@@ -126,39 +146,46 @@ type ReturnReceiptRequest struct {
 	Date string `json:"date"` // format: "yyyy-MM-dd HH:mm:ss"
 }
 
-// ─── /rest/info response ─────────────────────────────────────────────────────
-
 // InfoResponse is the response from GET /rest/info.
 type InfoResponse struct {
-	OperatorName  string     `json:"operatorName"`
-	OperatorTIN   string     `json:"operatorTIN"`
-	PosId         int        `json:"posId"`
-	PosNo         string     `json:"posNo"`
-	LastSentDate  string     `json:"lastSentDate"`
-	LeftLotteries int        `json:"leftLotteries"`
-	AppInfo       AppInfo    `json:"appInfo"`
-	Merchants     []Merchant `json:"merchants"`
+	OperatorName  string `json:"operatorName"`
+	OperatorTIN   string `json:"operatorTIN"`
+	PosId         int    `json:"posId"`
+	PosNo         string `json:"posNo"`
+	Version       string `json:"version"`
+	LastSentDate  string `json:"lastSentDate"`
+	LeftLotteries int    `json:"leftLotteries"`
+
+	AppInfo      AppInfo       `json:"appInfo"`
+	PaymentTypes []PaymentType `json:"paymentTypes"`
+	Merchants    []Merchant    `json:"merchants"`
+	Condition    Condition     `json:"condition"`
 }
 
 // AppInfo holds PosAPI application metadata.
 type AppInfo struct {
-	ApplicationDir string `json:"applicationDir"`
-	CurrentDir     string `json:"currentDir"`
-	Database       string `json:"database"`
-	DatabaseHost   string `json:"database-host"`
-	WorkDir        string `json:"workDir"`
+	ApplicationDir    string   `json:"applicationDir"`
+	CurrentDir        string   `json:"currentDir"`
+	Database          string   `json:"database"`
+	DatabaseHost      string   `json:"database-host"`
+	SupportedDatabase []string `json:"supported-databases"`
+	WorkDir           string   `json:"workDir"`
 }
-
-// Merchant is a registered merchant in PosAPI.
+type PaymentType struct {
+	Code string `json:"code"`
+	Name string `json:"name"`
+}
 type Merchant struct {
-	Name      string     `json:"name"`
 	TIN       string     `json:"tin"`
+	Name      string     `json:"name"`
+	VatPayer  bool       `json:"vatPayer"`
 	Customers []Customer `json:"customers"`
 }
-
-// Customer is a buyer registered under a merchant.
 type Customer struct {
-	Name     string `json:"name"`
 	TIN      string `json:"tin"`
-	VatPayer string `json:"vatPayer"`
+	Name     string `json:"name"`
+	VatPayer bool   `json:"vatPayer"`
+}
+type Condition struct {
+	IsMedicine bool `json:"isMedicine"`
 }
