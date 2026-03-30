@@ -110,7 +110,7 @@ type CreateReceiptResponse struct {
 	QrDate   string       `json:"qrDate"`  // QR code data (called qrDate in the 3.0 spec)
 	Lottery  string       `json:"lottery"`
 	Date     string       `json:"date"`
-	Easy     string       `json:"easy"`
+	Easy     bool       `json:"easy"`
 	Receipts []ReceiptRef `json:"receipts"`
 }
 
